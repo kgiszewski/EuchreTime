@@ -2,7 +2,7 @@
 
 namespace EuchreTime.Core.Rules.WinningConditions
 {
-    public class NormalWinningConditions : IWinningConditions
+    public class FirstTeamToTenWins : IWinningConditions
     {
         public bool HasAnyTeamWon(IGameState gameState)
         {

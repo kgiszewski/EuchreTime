@@ -22,7 +22,7 @@ namespace EuchreTime.Core.Game
         public IWinningConditions WinningConditions { get; }
         public IChooseDealerStrategy ChooseDealerStrategy { get; }
 
-        public GameStateBase() : this(new EuchreDeck(), new NormalWinningConditions(), new DealerChooser())
+        public GameStateBase() : this(new EuchreDeck(), new FirstTeamToTenWins(), new FirstBlackJackDealsStrategy())
         {
 
         }

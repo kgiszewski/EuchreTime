@@ -6,7 +6,7 @@ using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Rules.DealerStrategies
 {
-    public class DealerChooser : IChooseDealerStrategy
+    public class FirstBlackJackDealsStrategy : IChooseDealerStrategy
     {
         public IPlayer ChooseDealer(IDeck deck, List<IPlayer> players)
         {
