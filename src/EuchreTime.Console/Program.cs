@@ -10,7 +10,7 @@ namespace EuchreTime.Console
             var gameState = new GameState();
 
             //game loop here
-            while (!gameState.HasAnyTeamWon())
+            while (!gameState.GetWinningConditions().HasAnyTeamWon(gameState))
             {
                 gameState.GetDealer().Deal(gameState);
             }

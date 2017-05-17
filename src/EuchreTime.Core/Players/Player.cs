@@ -7,17 +7,14 @@ namespace EuchreTime.Core.Players
 {
     public class Player
     {
-        private readonly int _teamNumber;
-        private List<Card> _cards;
+        private readonly List<Card> _cards;
 
-        public int TeamNumber
-        {
-            get { return _teamNumber; }
-        }
+        public int TeamNumber { get; }
 
         public Player(int teamNumber)
         {
-            _teamNumber = teamNumber;
+            TeamNumber = teamNumber;
+            _cards = new List<Card>();
         }
 
         public IEnumerable<Card> GetCards()
@@ -36,23 +33,28 @@ namespace EuchreTime.Core.Players
                 deck.Shuffle();
             }
 
-            var cards = deck.GetDeck();
+            var cards = deck.GetCards();
 
             //find dealer position in the player list
             var players = gameState.GetPlayers().ToList();
 
             var indexOfDealer = players.ToList().FindIndex(x => x.GetHashCode() == GetHashCode());
+            var dealToPlayerIndex = indexOfDealer + 1;
 
             //keep track of three vs two cards
             var isThreeCards = true;
 
             for(var i = 0; i < 8; i++)
             {
-                var dealToPlayerIndex = indexOfDealer + 1;
-
                 if (dealToPlayerIndex > 3)
                 {
                     dealToPlayerIndex = 0;
+                }
+
+                //flip the 3/2 pattern on the 4th handout
+                if (i == 4)
+                {
+                    isThreeCards = !isThreeCards;
                 }
 
                 if (isThreeCards)
@@ -68,11 +70,40 @@ namespace EuchreTime.Core.Players
                     players[dealToPlayerIndex]._cards.Add(cards.Pop());
                     isThreeCards = true;
                 }
+
+                dealToPlayerIndex++;
             }
 
             //add rest to kitty
             gameState.Kitty = cards;
-            gameState.Trump = gameState.Kitty.Peek().Suit;
+
+            //turn up top card of kitty
+            gameState.TurnedUpCard = gameState.Kitty.Pop();
+        }
+
+        public void OrderUpTrump()
+        {
+            
+        }
+
+        public void Pass()
+        {
+            
+        }
+
+        public void GoAlone()
+        {
+            
+        }
+
+        public void PlayCard()
+        {
+            
+        }
+
+        public void Discard()
+        {
+            
         }
     }
 }

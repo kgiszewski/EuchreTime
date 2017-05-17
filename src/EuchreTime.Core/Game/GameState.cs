@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using EuchreTime.Core.Players;
+using EuchreTime.Core.Rules.DealerStrategies;
+using EuchreTime.Core.Rules.WinningConditions;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Ranks;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Game
@@ -10,22 +11,27 @@ namespace EuchreTime.Core.Game
     public class GameState
     {
         private readonly List<Player> _players;
-        private Player _dealer;
-        private EuchreDeck _deck;
+        private readonly Player _dealer;
+        private readonly IDeck _deck;
+        private readonly IWinningConditions _winningConditions;
+        private readonly IChooseDealerStrategy _dealerStrategy;
 
         public int TeamOneScore = 0;
         public int TeamTwoScore = 0;
 
+        public Card TurnedUpCard;
         public Stack<Card> Kitty;
+       
+        public Suit LeadSuit;
 
-        public Suit Trump
+        public GameState() : this(new EuchreDeck(), new NormalWinningConditions(), new DealerChooser())
         {
-            get;
-            set;
+            
         }
 
-        public GameState()
+        public GameState(IDeck deck, IWinningConditions winningConditions, IChooseDealerStrategy dealerStrategy)
         {
+            _deck = deck;
             _deck.Initialize();
 
             for (var i = 0; i < 100; i++)
@@ -33,32 +39,12 @@ namespace EuchreTime.Core.Game
                 _deck.Shuffle();
             }
 
-            _players = new List<Player> { new Player(1), new Player(2), new Player(1), new Player(2)};
+            _players = new List<Player> { new Player(1), new Player(2), new Player(1), new Player(2) };
 
-            var cards = _deck.GetDeck();
+            _winningConditions = winningConditions;
+            _dealerStrategy = dealerStrategy;
 
-            //first black jack deals
-            var topCard = cards.Pop();
-            var playerIndex = 0;
-
-            while (topCard.Rank.Name != Rank.Jack && (topCard.Suit.Name == Suit.Clubs || topCard.Suit.Name == Suit.Spades))
-            {
-                topCard = cards.Pop();
-
-                if (playerIndex == 3)
-                {
-                    playerIndex = 0;
-                }
-
-                playerIndex++;
-            }
-
-            _dealer = _players[playerIndex];
-        }
-
-        public bool HasAnyTeamWon()
-        {
-            return TeamOneScore >= 10 || TeamTwoScore >= 10;
+            _dealer = _dealerStrategy.ChooseDealer(_deck, _players);
         }
 
         public Player GetDealer()
@@ -66,7 +52,7 @@ namespace EuchreTime.Core.Game
             return _dealer;
         }
 
-        public EuchreDeck GetDeck()
+        public IDeck GetDeck()
         {
             return _deck;
         }
@@ -74,6 +60,11 @@ namespace EuchreTime.Core.Game
         public IEnumerable<Player> GetPlayers()
         {
             return _players;
+        }
+
+        public IWinningConditions GetWinningConditions()
+        {
+            return _winningConditions;
         }
     }
 }
