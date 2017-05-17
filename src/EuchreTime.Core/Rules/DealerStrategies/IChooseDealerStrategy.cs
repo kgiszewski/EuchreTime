@@ -6,6 +6,6 @@ namespace EuchreTime.Core.Rules.DealerStrategies
 {
     public interface IChooseDealerStrategy
     {
-        Player ChooseDealer(IDeck deck, List<Player> players);
+        IPlayer ChooseDealer(IDeck deck, List<IPlayer> players);
     }
 }

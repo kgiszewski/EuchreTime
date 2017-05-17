@@ -4,6 +4,6 @@ namespace EuchreTime.Core.Rules.WinningConditions
 {
     public interface IWinningConditions
     {
-        bool HasAnyTeamWon(GameState gameState);
+        bool HasAnyTeamWon(IGameState gameState);
     }
 }

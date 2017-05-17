@@ -8,17 +8,15 @@ namespace EuchreTime.Core.Rules.DealerStrategies
 {
     public class DealerChooser : IChooseDealerStrategy
     {
-        public Player ChooseDealer(IDeck deck, List<Player> players)
+        public IPlayer ChooseDealer(IDeck deck, List<IPlayer> players)
         {
-            var cards = deck.GetCards();
-
             //first black jack deals
-            var topCard = cards.Pop();
+            var topCard = deck.Cards.Pop();
             var playerIndex = 0;
 
             while (topCard.Rank.Name != Rank.Jack && (topCard.Suit.Name == Suit.Clubs || topCard.Suit.Name == Suit.Spades))
             {
-                topCard = cards.Pop();
+                topCard = deck.Cards.Pop();
 
                 if (playerIndex == 3)
                 {

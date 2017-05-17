@@ -9,10 +9,18 @@ namespace EuchreTime.Console
             //init
             var gameState = new GameState();
 
-            //game loop here
-            while (!gameState.GetWinningConditions().HasAnyTeamWon(gameState))
+            //main game loop here
+            while (!gameState.WinningConditions.HasAnyTeamWon(gameState))
             {
-                gameState.GetDealer().Deal(gameState);
+                gameState.Dealer.Deal(gameState);
+
+                //first round bid
+                //if no takers, second round bid
+                ////handle stick the dealer above
+                
+                //play a hand
+
+                //advance the deal
             }
         }
     }
