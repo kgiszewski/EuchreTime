@@ -17,8 +17,13 @@ namespace EuchreTime.Core.Game
         IPlayer Dealer { get; set; }
         ICard TurnedUpCard { get; set; }
         Stack<ICard> Kitty { get; set; }
-        Suit LeadSuit { get; set; }
+        ISuit LeadSuit { get; set; }
         IWinningConditions WinningConditions { get; }
         IChooseDealerStrategy ChooseDealerStrategy { get; }
+        IPlayer CurrentPlayer { get; set; }
+        void AdvanceToNextPlayer();
+        void SetCurrentPlayerToLeftOfDealer();
+        ISuit Trump { get; set; }
+        IPlayer OrderingUpPlayer { get; set; }
     }
 }

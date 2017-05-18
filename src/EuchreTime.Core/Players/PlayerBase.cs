@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Rules.PlayerStrategies;
 using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Players
@@ -9,11 +9,16 @@ namespace EuchreTime.Core.Players
     {
         public List<ICard> Cards { get; set; }
         public int TeamNumber { get; }
+        public IPlayerStrategy PlayerStrategy { get; }
+        public bool IsHuman { get; }
+        public int TricksTaken { get; set; }
 
-        public PlayerBase(int teamNumber)
+        public PlayerBase(int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
         {
             TeamNumber = teamNumber;
             Cards = new List<ICard>();
+            PlayerStrategy = playerStrategy;
+            IsHuman = isHuman;
         }
         
         public virtual void Deal(IGameState gameState)
@@ -27,21 +32,14 @@ namespace EuchreTime.Core.Players
                 deck.Shuffle();
             }
 
-            //find dealer position in the player list
-            var players = gameState.Players.ToList();
-
-            var indexOfDealer = players.ToList().FindIndex(x => x.GetHashCode() == GetHashCode());
-            var dealToPlayerIndex = indexOfDealer + 1;
+            gameState.CurrentPlayer = gameState.Dealer;
 
             //keep track of three vs two cards
             var isThreeCards = true;
 
             for (var i = 0; i < 8; i++)
             {
-                if (dealToPlayerIndex > 3)
-                {
-                    dealToPlayerIndex = 0;
-                }
+                gameState.AdvanceToNextPlayer();
 
                 //flip the 3/2 pattern on the 4th handout
                 if (i == 4)
@@ -51,19 +49,17 @@ namespace EuchreTime.Core.Players
 
                 if (isThreeCards)
                 {
-                    players[dealToPlayerIndex].Cards.Add(deck.Cards.Pop());
-                    players[dealToPlayerIndex].Cards.Add(deck.Cards.Pop());
-                    players[dealToPlayerIndex].Cards.Add(deck.Cards.Pop());
+                    gameState.CurrentPlayer.Cards.Add(deck.Cards.Pop());
+                    gameState.CurrentPlayer.Cards.Add(deck.Cards.Pop());
+                    gameState.CurrentPlayer.Cards.Add(deck.Cards.Pop());
                     isThreeCards = false;
                 }
                 else
                 {
-                    players[dealToPlayerIndex].Cards.Add(deck.Cards.Pop());
-                    players[dealToPlayerIndex].Cards.Add(deck.Cards.Pop());
+                    gameState.CurrentPlayer.Cards.Add(deck.Cards.Pop());
+                    gameState.CurrentPlayer.Cards.Add(deck.Cards.Pop());
                     isThreeCards = true;
                 }
-
-                dealToPlayerIndex++;
             }
 
             //add rest to kitty
@@ -71,31 +67,6 @@ namespace EuchreTime.Core.Players
 
             //turn up top card of kitty
             gameState.TurnedUpCard = gameState.Kitty.Pop();
-        }
-
-        public void OrderUpTrump()
-        {
-
-        }
-
-        public void Pass()
-        {
-
-        }
-
-        public void GoAlone()
-        {
-
-        }
-
-        public void PlayCard()
-        {
-
-        }
-
-        public void Discard()
-        {
-
         }
     }
 }
