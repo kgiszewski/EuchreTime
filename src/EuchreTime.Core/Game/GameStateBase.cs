@@ -25,7 +25,8 @@ namespace EuchreTime.Core.Game
         public IPlayer CurrentPlayer { get; set; }
         public ISuit Trump { get; set; }
         public IPlayer OrderingUpPlayer { get; set; }
-
+        public List<ICard> CurrentHand { get; set; }
+        
         public GameStateBase() : this(new EuchreDeck(), new FirstTeamToTenWins(), new FirstBlackJackDealsStrategy())
         {
 
@@ -42,10 +43,10 @@ namespace EuchreTime.Core.Game
             }
 
             Players = new List<IPlayer> {
-                new Player(1, new NormalPlayerStrategy(), true),
-                new Player(2, new NormalPlayerStrategy(), false),
-                new Player(1, new NormalPlayerStrategy(), false),
-                new Player(2, new NormalPlayerStrategy(), false)
+                new Player("Kevin", 1, new NormalPlayerStrategy(), true),
+                new Player("Fred", 2, new NormalPlayerStrategy(), false),
+                new Player("Sally", 1, new NormalPlayerStrategy(), false),
+                new Player("Joe", 2, new NormalPlayerStrategy(), false)
             };
 
             WinningConditions = winningConditions;
@@ -84,6 +85,12 @@ namespace EuchreTime.Core.Game
             CurrentPlayer = null;
             AdvanceToNextPlayer();
             AdvanceToNextPlayer();
+        }
+
+        public void EvaluateHand()
+        {
+            //determine the winner of the hand
+            //update score
         }
     }
 }

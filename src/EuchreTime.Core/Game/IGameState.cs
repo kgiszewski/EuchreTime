@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using EuchreTime.Core.Players;
 using EuchreTime.Core.Rules.DealerStrategies;
 using EuchreTime.Core.Rules.WinningConditions;
@@ -25,5 +26,7 @@ namespace EuchreTime.Core.Game
         void SetCurrentPlayerToLeftOfDealer();
         ISuit Trump { get; set; }
         IPlayer OrderingUpPlayer { get; set; }
+        List<ICard> CurrentHand { get; set; }
+        void EvaluateHand();
     }
 }

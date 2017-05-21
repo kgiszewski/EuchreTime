@@ -9,7 +9,7 @@ namespace EuchreTime.Core.Rules.PlayerStrategies
     {
         public bool ShouldOrderUpDealerInFirstRound(IGameState gameState)
         {
-            return true;
+            return false;
         }
 
         public ISuit SecondRoundTrumpChoice(IGameState gameState)

@@ -13,5 +13,8 @@ namespace EuchreTime.Core.Players
         IPlayerStrategy PlayerStrategy { get; }
         bool IsHuman { get; }
         int TricksTaken { get; set; }
+        string Name { get; set; }
+        void DiscardWhenOrderedUp(IGameState gameState);
+        void PlayCard(IGameState gameState);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System;
 using EuchreTime.Core.Game;
 using MechanicGrip.Core.Suits;
 
@@ -11,9 +12,13 @@ namespace EuchreTime.Console
             //init
             var gameState = new GameState();
 
+            System.Console.WriteLine("Welcome to Euchre Time!");
+            System.Console.WriteLine($"There are {gameState.Players.Where(x => x.IsHuman).Count()} human players and {gameState.Players.Where(x => !x.IsHuman).Count()} computer players.");
+            
             //main game loop here
             while (!gameState.WinningConditions.HasAnyTeamWon(gameState))
             {
+
                 gameState.Dealer.Deal(gameState);
 
                 //first round bid
@@ -37,11 +42,22 @@ namespace EuchreTime.Console
                 //ignoring loners for now
                 for (var i = 0; i < 20; i++)
                 {
-                    gameState.AdvanceToNextPlayer();
+                    for (var j = 0; j < 4; j++)
+                    {
+                        if (gameState.CurrentPlayer.IsHuman)
+                        {
+                            //ask the human which card to play
+                        }
+                        else
+                        {
+                            gameState.CurrentPlayer.PlayCard(gameState);
+                        }
+
+                        gameState.AdvanceToNextPlayer();
+                    }
+
+                    gameState.EvaluateHand();
                 }
-
-
-                //update score
 
                 //advance the deal, reset state as-needed
                 gameState.SetCurrentPlayerToLeftOfDealer();
@@ -49,11 +65,15 @@ namespace EuchreTime.Console
 
                 gameState.Trump = null;
                 gameState.TurnedUpCard = null;
+                gameState.OrderingUpPlayer = null;
+                gameState.Kitty.Clear();
             }
         }
 
         private static void _askEachPlayerAboutTheTopCard(IGameState gameState)
         {
+            System.Console.WriteLine("Beginning the bidding...");
+
             for (var i = 0; i < gameState.Players.Count(); i++)
             {
                 gameState.AdvanceToNextPlayer();
@@ -62,17 +82,36 @@ namespace EuchreTime.Console
 
                 if (gameState.CurrentPlayer.IsHuman)
                 {
-                    //prompt the human for a yes/no
-                    shouldOrderUp = false;
+                    var keyPressed = ' ';
+
+                    while (keyPressed != 'Y' && keyPressed != 'N' && keyPressed != 'y' && keyPressed != 'n')
+                    {
+                        System.Console.WriteLine($"Do you wish to order up {gameState.Dealer.Name} with the {gameState.TurnedUpCard.Rank.Name} of {gameState.TurnedUpCard.Suit.Name} (y/n)?");
+                        keyPressed = System.Console.ReadKey(false).KeyChar;
+                    }
+                    
+                    shouldOrderUp = keyPressed == 'Y' || keyPressed == 'y';
+
+                    var action = shouldOrderUp ? "to order up trump" : "to pass";
+
+                    System.Console.WriteLine($"{gameState.CurrentPlayer.Name} decided {action}.");
                 }
                 else
                 {
                     shouldOrderUp = gameState.CurrentPlayer.PlayerStrategy.ShouldOrderUpDealerInFirstRound(gameState);
+
+                    var action = shouldOrderUp ? "to order up trump" : "to pass";
+
+                    System.Console.WriteLine($"{gameState.CurrentPlayer.Name} decided {action}.");
                 }
 
                 if (shouldOrderUp)
                 {
                     //order up the dealer
+                    gameState.Dealer.DiscardWhenOrderedUp(gameState);
+                    gameState.Dealer.Cards.Add(gameState.TurnedUpCard);
+                    gameState.Trump = gameState.TurnedUpCard.Suit;
+                    gameState.OrderingUpPlayer = gameState.CurrentPlayer;
                     break;
                 }
             }
@@ -100,6 +139,14 @@ namespace EuchreTime.Console
                     break;
                 }
             }
+        }
+
+        private void _displayGameState(IGameState gameState)
+        {
+            System.Console.WriteLine("----------");
+            System.Console.WriteLine();
+            System.Console.WriteLine("----------");
+
         }
     }
 }

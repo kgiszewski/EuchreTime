@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Rules.PlayerStrategies;
 using MechanicGrip.Core.Cards;
@@ -12,13 +13,15 @@ namespace EuchreTime.Core.Players
         public IPlayerStrategy PlayerStrategy { get; }
         public bool IsHuman { get; }
         public int TricksTaken { get; set; }
+        public string Name { get; set; }
 
-        public PlayerBase(int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
+        public PlayerBase(string name, int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
         {
             TeamNumber = teamNumber;
             Cards = new List<ICard>();
             PlayerStrategy = playerStrategy;
             IsHuman = isHuman;
+            Name = name;
         }
         
         public virtual void Deal(IGameState gameState)
@@ -67,6 +70,39 @@ namespace EuchreTime.Core.Players
 
             //turn up top card of kitty
             gameState.TurnedUpCard = gameState.Kitty.Pop();
+        }
+
+        public virtual void DiscardWhenOrderedUp(IGameState gameState)
+        {
+            //discard lowest non-trump
+            var nonTrumpCards = Cards.Where(x => x.Suit != gameState.TurnedUpCard.Suit).OrderBy(x => x.Rank.Value).ToList();
+            var trumpCards = Cards.Where(x => x.Suit == gameState.TurnedUpCard.Suit).ToList();
+
+            //TODO: remove the 'left' from consideration
+            //create a helper to determine the 'left'
+
+            var cardToRemove = nonTrumpCards[0];
+            nonTrumpCards.RemoveAt(0);
+
+            gameState.Kitty.Push(cardToRemove);
+
+            nonTrumpCards.AddRange(trumpCards);
+
+            Cards = nonTrumpCards;
+        }
+
+        public virtual void PlayCard(IGameState gameState)
+        {
+            //if no card have been played in the current hand, then this is lead
+            if (!gameState.CurrentHand.Any())
+            {
+                //lead a card
+            }
+            else
+            {
+                //otherwise, need to follow suit
+                //OR trump   
+            }
         }
     }
 }
