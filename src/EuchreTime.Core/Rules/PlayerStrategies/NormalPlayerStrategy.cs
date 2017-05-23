@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EuchreTime.Core.Game;
+﻿using EuchreTime.Core.Game;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Suits;
 
@@ -16,7 +14,16 @@ namespace EuchreTime.Core.Rules.PlayerStrategies
         public ISuit SecondRoundTrumpChoice(IGameState gameState)
         {
             return null;
-            //return gameState.CurrentPlayer.Cards.First().Suit;
+        }
+
+        public ICard ChooseLeadCard(IGameState gameState)
+        {
+            return null;
+        }
+
+        public ICard ChooseNonLeadCard(IGameState gameState)
+        {
+            return null;
         }
     }
 }

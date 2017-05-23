@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MechanicGrip.Core.Cards;
 
@@ -18,7 +19,7 @@ namespace EuchreTime.Console.Rendering
             _sb = new StringBuilder();
         }
 
-        public string RenderCards(List<ICard> cards)
+        public string RenderCards(List<ICard> cards, bool displayIndex = false)
         {
             _sb.Clear();
 
@@ -26,7 +27,7 @@ namespace EuchreTime.Console.Rendering
             {
                 var index = 0;
 
-                foreach (var card in cards)
+                foreach (var card in cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value))
                 {
                     index++;
 
@@ -56,7 +57,10 @@ namespace EuchreTime.Console.Rendering
                             _sb.Append(CardFooter);
                             break;
                         case 7:
-                            _sb.Append($"    {index}     ");
+                            if (displayIndex)
+                            {
+                                _sb.Append($"    {index}     ");
+                            }
                             break;
                         default:
                             _sb.Append(EmptyRow);

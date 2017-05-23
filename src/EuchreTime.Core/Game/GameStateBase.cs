@@ -53,6 +53,8 @@ namespace EuchreTime.Core.Game
             ChooseDealerStrategy = dealerStrategy;
 
             Dealer = ChooseDealerStrategy.ChooseDealer(Deck, Players.ToList());
+
+            CurrentHand = new List<ICard>();
         }
 
         public void AdvanceToNextPlayer()
@@ -68,7 +70,7 @@ namespace EuchreTime.Core.Game
             var playersList = Players.ToList();
 
             //get index of current player
-            var indexOfCurrentPlayer = playersList.FindIndex(x => x.GetHashCode() == CurrentPlayer.GetHashCode());
+            var indexOfCurrentPlayer = playersList.FindIndex(x => x.Equals(CurrentPlayer));
 
             var nextPlayerIndex = indexOfCurrentPlayer + 1;
 

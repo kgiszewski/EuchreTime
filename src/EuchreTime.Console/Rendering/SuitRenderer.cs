@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text;
-using EuchreTime.Core.Game;
-using MechanicGrip.Core.Decks;
+using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Console.Rendering
 {
@@ -16,14 +15,9 @@ namespace EuchreTime.Console.Rendering
             _sb = new StringBuilder();
         }
 
-        public string RenderSuits(IGameState gameState)
+        public string RenderSuits(List<ISuit> suitsToChooseFrom, bool displayIndex = false)
         {
-            var newDeck = new EuchreDeck();
-            newDeck.Initialize();
-
-            var allSuits = newDeck.Cards.Select(x => x.Suit).Distinct();
-
-            var suitsToChooseFrom = allSuits.Where(x => x.Name != gameState.TurnedUpCard.Suit.Name).ToList();
+            _sb.Clear();
 
             for (var row = 0; row < _numberRows; row++)
             {
@@ -40,7 +34,10 @@ namespace EuchreTime.Console.Rendering
                             break;
 
                         case 1:
-                            _sb.Append($"{index} ");
+                            if (displayIndex)
+                            {
+                                _sb.Append($"{index} ");
+                            }
                             break;
                     }
                 }

@@ -96,12 +96,11 @@ namespace EuchreTime.Core.Players
             //if no card have been played in the current hand, then this is lead
             if (!gameState.CurrentHand.Any())
             {
-                //lead a card
+                gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
             }
             else
             {
-                //otherwise, need to follow suit
-                //OR trump   
+                gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
             }
         }
     }

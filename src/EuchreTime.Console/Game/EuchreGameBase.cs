@@ -31,7 +31,7 @@ namespace EuchreTime.Console.Game
             while (!_gameState.WinningConditions.HasAnyTeamWon(_gameState))
             {
                 _gameState.Dealer.Deal(_gameState);
-
+                
                 System.Console.WriteLine($"{_gameState.Dealer.Name} has dealt the cards.");
 
                 //first round bid
@@ -41,35 +41,34 @@ namespace EuchreTime.Console.Game
                 if (_gameState.Trump == null)
                 {
                     _secondRoundBidder.AskEachPlayerAboutTrump(_gameState);
-                    
-                    if (_gameState.Trump == null)
-                    {
-                        //TODO: handle stick the dealer
-                    }
                 }
 
-                //return the current player to the left of the dealer
-                _gameState.SetCurrentPlayerToLeftOfDealer();
-
-                //play a hand
-                //ignoring loners for now
-                for (var i = 0; i < 20; i++)
+                //play a hand only if trump has been chosen
+                if (_gameState.Trump != null)
                 {
-                    for (var j = 0; j < 4; j++)
+                    //return the current player to the left of the dealer
+                    _gameState.SetCurrentPlayerToLeftOfDealer();
+
+                    //play a hand
+                    //ignoring loners for now
+                    for (var i = 0; i < 20; i++)
                     {
-                        if (_gameState.CurrentPlayer.IsHuman)
+                        for (var j = 0; j < 4; j++)
                         {
-                            //ask the human which card to play
-                        }
-                        else
-                        {
-                            _gameState.CurrentPlayer.PlayCard(_gameState);
+                            if (_gameState.CurrentPlayer.IsHuman)
+                            {
+                                //ask the human which card to play
+                            }
+                            else
+                            {
+                                _gameState.CurrentPlayer.PlayCard(_gameState);
+                            }
+
+                            _gameState.AdvanceToNextPlayer();
                         }
 
-                        _gameState.AdvanceToNextPlayer();
+                        _gameState.EvaluateHand();
                     }
-
-                    _gameState.EvaluateHand();
                 }
 
                 //advance the deal, reset state as-needed
@@ -80,6 +79,16 @@ namespace EuchreTime.Console.Game
                 _gameState.TurnedUpCard = null;
                 _gameState.OrderingUpPlayer = null;
                 _gameState.Kitty.Clear();
+                _gameState.CurrentHand.Clear();
+                _clearPlayerCards();
+            }
+        }
+
+        private void _clearPlayerCards()
+        {
+            foreach (var player in _gameState.Players)
+            {
+                player.Cards.Clear();
             }
         }
     }

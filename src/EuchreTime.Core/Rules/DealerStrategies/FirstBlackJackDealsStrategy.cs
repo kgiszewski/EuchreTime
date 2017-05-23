@@ -14,7 +14,7 @@ namespace EuchreTime.Core.Rules.DealerStrategies
             var topCard = deck.Cards.Pop();
             var playerIndex = 0;
 
-            while (topCard.Rank.Name != Rank.Jack && (topCard.Suit.Name == Suit.Clubs || topCard.Suit.Name == Suit.Spades))
+            while (topCard.Rank.Name != Rank.Jack && (topCard.Suit.Equals(Suit.Clubs) || topCard.Suit.Equals(Suit.Spades)))
             {
                 topCard = deck.Cards.Pop();
 

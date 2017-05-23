@@ -26,7 +26,7 @@ namespace EuchreTime.Console.Bidding
 
             System.Console.WriteLine("Your cards are the following:");
 
-            var humanPlayerCards = _cardRenderer.RenderCards(gameState.Dealer.Cards);
+            var humanPlayerCards = _cardRenderer.RenderCards(gameState.Dealer.Cards, true);
 
             System.Console.WriteLine(humanPlayerCards);
 
@@ -41,13 +41,13 @@ namespace EuchreTime.Console.Bidding
 
                 if (gameState.CurrentPlayer.IsHuman)
                 {
-                    while (keyPressed != 'Y' && keyPressed != 'N' && keyPressed != 'y' && keyPressed != 'n')
+                    while (keyPressed != 'Y' && keyPressed != 'N')
                     {
                         System.Console.WriteLine($"Do you wish to order up {gameState.Dealer.Name} with the {gameState.TurnedUpCard.Rank.Name} of {gameState.TurnedUpCard.Suit.Name} (y/n)?");
-                        keyPressed = System.Console.ReadKey(false).KeyChar;
+                        keyPressed = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
                     }
 
-                    shouldOrderUp = keyPressed == 'Y' || keyPressed == 'y';
+                    shouldOrderUp = keyPressed == 'Y';
 
                     var action = shouldOrderUp ? "to order up trump" : "to pass";
 

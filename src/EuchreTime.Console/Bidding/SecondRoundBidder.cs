@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
+using MechanicGrip.Core.Decks;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Console.Bidding
@@ -24,12 +27,26 @@ namespace EuchreTime.Console.Bidding
 
                 if (gameState.CurrentPlayer.IsHuman)
                 {
-                    var renderedSuits = _suitRenderer.RenderSuits(gameState);
+                    var suitsToChooseFrom = _getSuitsToChooseFrom(gameState);
+
+                    var renderedSuits = _suitRenderer.RenderSuits(suitsToChooseFrom, true);
+
+                    System.Console.WriteLine("Choose a suit or pass (1, 2, 3 or p):");
 
                     System.Console.WriteLine(renderedSuits);
 
-                    //prompt for a suit to choose or pass
-                    trumpSelected = null;
+                    var keyChosen = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
+
+                    //TODO: handle input safely
+                    if (keyChosen == 'p')
+                    {
+                        System.Console.WriteLine($"{gameState.CurrentPlayer.Name} has decided to pass.");
+                    }
+                    else
+                    {
+                        var trumpIndex = int.Parse(keyChosen.ToString());
+                        trumpSelected = suitsToChooseFrom[trumpIndex - 1];
+                    }
                 }
                 else
                 {
@@ -40,9 +57,21 @@ namespace EuchreTime.Console.Bidding
                 {
                     //set trump
                     gameState.Trump = trumpSelected;
+
+                    System.Console.WriteLine($"{trumpSelected.Name} has been chosen as the trump suit.");
                     break;
                 }
             }
+        }
+
+        private List<ISuit> _getSuitsToChooseFrom(IGameState gameState)
+        {
+            var newDeck = new EuchreDeck();
+            newDeck.Initialize();
+
+            var allSuits = newDeck.Cards.Select(x => x.Suit).Distinct();
+
+            return allSuits.Where(x => x.Name != gameState.TurnedUpCard.Suit.Name).ToList();
         }
     }
 }
