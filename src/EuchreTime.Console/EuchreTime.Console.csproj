@@ -47,8 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bidding\FirstRoundBidder.cs" />
+    <Compile Include="Bidding\IHandleFirstRoundBidding.cs" />
+    <Compile Include="Bidding\IHandleSecondRoundBidding.cs" />
+    <Compile Include="Bidding\SecondRoundBidder.cs" />
+    <Compile Include="Game\EuchreGame.cs" />
+    <Compile Include="Game\EuchreGameBase.cs" />
+    <Compile Include="Game\IEuchreGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\CardRenderer.cs" />
+    <Compile Include="Rendering\IRenderCards.cs" />
+    <Compile Include="Rendering\IRenderSuits.cs" />
+    <Compile Include="Rendering\SuitRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -59,6 +70,7 @@
       <Name>EuchreTime.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
