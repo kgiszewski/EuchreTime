@@ -6,7 +6,7 @@ using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Players
 {
-    public class PlayerBase : IPlayer
+    public abstract class PlayerBase : IPlayer
     {
         public List<ICard> Cards { get; set; }
         public int TeamNumber { get; }
@@ -15,7 +15,7 @@ namespace EuchreTime.Core.Players
         public int TricksTaken { get; set; }
         public string Name { get; set; }
 
-        public PlayerBase(string name, int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
+        protected PlayerBase(string name, int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
         {
             TeamNumber = teamNumber;
             Cards = new List<ICard>();

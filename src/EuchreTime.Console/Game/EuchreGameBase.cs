@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using EuchreTime.Console.Bidding;
-using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
 
 namespace EuchreTime.Console.Game
 {
-    public class EuchreGameBase : IEuchreGame
+    public abstract class EuchreGameBase : IEuchreGame
     {
         private readonly IGameState _gameState;
         private readonly IHandleFirstRoundBidding _firstRoundBidder;
         private readonly IHandleSecondRoundBidding _secondRoundBidder;
 
-        public EuchreGameBase(
+        protected EuchreGameBase(
             IGameState gameState,
             IHandleFirstRoundBidding firstRoundBidder,
             IHandleSecondRoundBidding secondRoundBidder

@@ -10,7 +10,7 @@ using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Game
 {
-    public class GameStateBase : IGameState
+    public abstract class GameStateBase : IGameState
     {
         public IDeck Deck { get; }
         public IEnumerable<IPlayer> Players { get; }
@@ -26,13 +26,13 @@ namespace EuchreTime.Core.Game
         public ISuit Trump { get; set; }
         public IPlayer OrderingUpPlayer { get; set; }
         public List<ICard> CurrentHand { get; set; }
-        
-        public GameStateBase() : this(new EuchreDeck(), new FirstTeamToTenWins(), new FirstBlackJackDealsStrategy())
+
+        protected GameStateBase() : this(new EuchreDeck(), new FirstTeamToTenWins(), new FirstBlackJackDealsStrategy())
         {
 
         }
 
-        public GameStateBase(IDeck deck, IWinningConditions winningConditions, IChooseDealerStrategy dealerStrategy)
+        protected GameStateBase(IDeck deck, IWinningConditions winningConditions, IChooseDealerStrategy dealerStrategy)
         {
             Deck = deck;
             Deck.Initialize();
