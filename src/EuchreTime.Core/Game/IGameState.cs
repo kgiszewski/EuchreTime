@@ -26,7 +26,7 @@ namespace EuchreTime.Core.Game
         void SetCurrentPlayerToLeftOfDealer();
         ISuit Trump { get; set; }
         IPlayer OrderingUpPlayer { get; set; }
-        List<ICard> CurrentHand { get; set; }
+        List<PlayedCard> CurrentHand { get; set; }
         void EvaluateHand();
     }
 }

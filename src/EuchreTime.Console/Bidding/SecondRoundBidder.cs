@@ -38,7 +38,7 @@ namespace EuchreTime.Console.Bidding
                     var keyChosen = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
 
                     //TODO: handle input safely
-                    if (keyChosen == 'p')
+                    if (keyChosen == 'P')
                     {
                         System.Console.WriteLine($"{gameState.CurrentPlayer.Name} has decided to pass.");
                     }
@@ -55,7 +55,6 @@ namespace EuchreTime.Console.Bidding
 
                 if (trumpSelected != null)
                 {
-                    //set trump
                     gameState.Trump = trumpSelected;
 
                     System.Console.WriteLine($"{trumpSelected.Name} has been chosen as the trump suit.");

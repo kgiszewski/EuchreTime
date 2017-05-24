@@ -20,13 +20,16 @@ namespace EuchreTime.Console.Bidding
         {
             System.Console.WriteLine("The following card was turned up:");
 
-            var turnedUpRenderedCard = _cardRenderer.RenderCards(new List<ICard> { gameState.TurnedUpCard });
+            var turnedUpRenderedCard = _cardRenderer.RenderCards(new List<ICard> { gameState.TurnedUpCard }, new CardRenderingOptions());
 
             System.Console.WriteLine(turnedUpRenderedCard);
 
             System.Console.WriteLine("Your cards are the following:");
 
-            var humanPlayerCards = _cardRenderer.RenderCards(gameState.Dealer.Cards, true);
+            var humanPlayerCards = _cardRenderer.RenderCards(gameState.Dealer.Cards, new CardRenderingOptions
+            {
+                ShowIndexes = true
+            });
 
             System.Console.WriteLine(humanPlayerCards);
 
@@ -70,10 +73,10 @@ namespace EuchreTime.Console.Bidding
                         //ask which card to discard
                         System.Console.WriteLine("Enter the card number to discard (1, 2, 3, 4, 5):");
 
-                        keyPressed = System.Console.ReadKey(false).KeyChar;
+                        keyPressed = System.Console.ReadKey(true).KeyChar;
 
                         //TODO: range check
-                        var index = Convert.ToInt32(keyPressed);
+                        var index = int.Parse(keyPressed.ToString());
 
                         var cardToRemove = gameState.CurrentPlayer.Cards[index];
                         gameState.CurrentPlayer.Cards.RemoveAt(0);

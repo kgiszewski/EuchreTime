@@ -91,16 +91,16 @@ namespace EuchreTime.Core.Players
             Cards = nonTrumpCards;
         }
 
-        public virtual void PlayCard(IGameState gameState)
+        public virtual ICard ChooseCardToPlay(IGameState gameState)
         {
             //if no card have been played in the current hand, then this is lead
             if (!gameState.CurrentHand.Any())
             {
-                gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
+                return gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
             }
             else
             {
-                gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
+                return gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
             }
         }
     }

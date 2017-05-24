@@ -19,7 +19,7 @@ namespace EuchreTime.Console.Rendering
             _sb = new StringBuilder();
         }
 
-        public string RenderCards(List<ICard> cards, bool displayIndex = false)
+        public string RenderCards(List<ICard> cards, CardRenderingOptions renderingOptions)
         {
             _sb.Clear();
 
@@ -27,7 +27,12 @@ namespace EuchreTime.Console.Rendering
             {
                 var index = 0;
 
-                foreach (var card in cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value))
+                if (renderingOptions.OrderByRanks)
+                {
+                    cards = cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
+                }
+
+                foreach (var card in cards)
                 {
                     index++;
 
@@ -57,7 +62,7 @@ namespace EuchreTime.Console.Rendering
                             _sb.Append(CardFooter);
                             break;
                         case 7:
-                            if (displayIndex)
+                            if (renderingOptions.ShowIndexes)
                             {
                                 _sb.Append($"    {index}     ");
                             }

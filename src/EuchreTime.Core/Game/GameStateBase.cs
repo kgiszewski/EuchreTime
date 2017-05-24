@@ -25,7 +25,7 @@ namespace EuchreTime.Core.Game
         public IPlayer CurrentPlayer { get; set; }
         public ISuit Trump { get; set; }
         public IPlayer OrderingUpPlayer { get; set; }
-        public List<ICard> CurrentHand { get; set; }
+        public List<PlayedCard> CurrentHand { get; set; }
 
         protected GameStateBase() : this(new EuchreDeck(), new FirstTeamToTenWins(), new FirstBlackJackDealsStrategy())
         {
@@ -54,7 +54,7 @@ namespace EuchreTime.Core.Game
 
             Dealer = ChooseDealerStrategy.ChooseDealer(Deck, Players.ToList());
 
-            CurrentHand = new List<ICard>();
+            CurrentHand = new List<PlayedCard>();
         }
 
         public void AdvanceToNextPlayer()

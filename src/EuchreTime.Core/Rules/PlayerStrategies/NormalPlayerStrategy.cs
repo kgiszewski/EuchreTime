@@ -18,12 +18,12 @@ namespace EuchreTime.Core.Rules.PlayerStrategies
 
         public ICard ChooseLeadCard(IGameState gameState)
         {
-            return null;
+            return gameState.CurrentPlayer.Cards[0];
         }
 
         public ICard ChooseNonLeadCard(IGameState gameState)
         {
-            return null;
+            return gameState.CurrentPlayer.Cards[0];
         }
     }
 }

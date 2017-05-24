@@ -54,11 +54,14 @@
     <Compile Include="Game\EuchreGame.cs" />
     <Compile Include="Game\EuchreGameBase.cs" />
     <Compile Include="Game\IEuchreGame.cs" />
+    <Compile Include="Hand\HandPlayer.cs" />
+    <Compile Include="Hand\IPlayHands.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\CardRenderer.cs" />
     <Compile Include="Rendering\IRenderCards.cs" />
     <Compile Include="Rendering\IRenderSuits.cs" />
+    <Compile Include="Rendering\CardRenderingOptions.cs" />
     <Compile Include="Rendering\SuitRenderer.cs" />
   </ItemGroup>
   <ItemGroup>

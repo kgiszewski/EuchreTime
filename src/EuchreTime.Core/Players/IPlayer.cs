@@ -15,6 +15,6 @@ namespace EuchreTime.Core.Players
         int TricksTaken { get; set; }
         string Name { get; set; }
         void DiscardWhenOrderedUp(IGameState gameState);
-        void PlayCard(IGameState gameState);
+        ICard ChooseCardToPlay(IGameState gameState);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EuchreTime.Console.Bidding;
 using EuchreTime.Console.Game;
+using EuchreTime.Console.Hand;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
 
@@ -11,10 +12,12 @@ namespace EuchreTime.Console
         {
             //init
             var gameState = new GameState();
-            var firstRoundBidder = new FirstRoundBidder(new CardRenderer());
+            var cardRenderer = new CardRenderer();
+            var firstRoundBidder = new FirstRoundBidder(cardRenderer);
             var secondRoundBidder = new SecondRoundBidder(new SuitRenderer());
+            var handPlayer = new HandPlayer(cardRenderer);
 
-            var game = new EuchreGame(gameState, firstRoundBidder, secondRoundBidder);
+            var game = new EuchreGame(gameState, firstRoundBidder, secondRoundBidder, handPlayer);
             game.Play();
         }
     }

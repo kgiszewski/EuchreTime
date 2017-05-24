@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using EuchreTime.Console.Bidding;
+using EuchreTime.Console.Hand;
 using EuchreTime.Core.Game;
 
 namespace EuchreTime.Console.Game
@@ -9,16 +10,19 @@ namespace EuchreTime.Console.Game
         private readonly IGameState _gameState;
         private readonly IHandleFirstRoundBidding _firstRoundBidder;
         private readonly IHandleSecondRoundBidding _secondRoundBidder;
+        private readonly IPlayHands _handPlayer;
 
         protected EuchreGameBase(
             IGameState gameState,
             IHandleFirstRoundBidding firstRoundBidder,
-            IHandleSecondRoundBidding secondRoundBidder
+            IHandleSecondRoundBidding secondRoundBidder,
+            IPlayHands handPlayer
         )
         {
             _gameState = gameState;
             _firstRoundBidder = firstRoundBidder;
             _secondRoundBidder = secondRoundBidder;
+            _handPlayer = handPlayer;
         }
 
         public void Play()
@@ -49,26 +53,7 @@ namespace EuchreTime.Console.Game
                     //return the current player to the left of the dealer
                     _gameState.SetCurrentPlayerToLeftOfDealer();
 
-                    //play a hand
-                    //ignoring loners for now
-                    for (var i = 0; i < 20; i++)
-                    {
-                        for (var j = 0; j < 4; j++)
-                        {
-                            if (_gameState.CurrentPlayer.IsHuman)
-                            {
-                                //ask the human which card to play
-                            }
-                            else
-                            {
-                                _gameState.CurrentPlayer.PlayCard(_gameState);
-                            }
-
-                            _gameState.AdvanceToNextPlayer();
-                        }
-
-                        _gameState.EvaluateHand();
-                    }
+                    _handPlayer.PlayHand(_gameState);
                 }
 
                 //advance the deal, reset state as-needed
