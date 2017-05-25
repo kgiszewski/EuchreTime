@@ -4,8 +4,12 @@ using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Hand
 {
+    public delegate void AiPlayedCardHandler(object sender, AiPlayedCardEventArgs e);
+
     public interface IPlayHands
     {
-        void PlayHand(IGameState gameState, Func<ICard> chooseHumanCard, Action<ICard> aiChoseCardCallback);
+        event AiPlayedCardHandler OnAiPlayedCard;
+
+        void PlayHand(IGameState gameState, Func<ICard> chooseHumanCard);
     }
 }

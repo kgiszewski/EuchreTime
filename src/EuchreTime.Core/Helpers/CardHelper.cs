@@ -4,34 +4,35 @@ using System.Linq;
 using EuchreTime.Core.Game;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;
+using MechanicGrip.Core.Ranks;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Helpers
 {
-    public class CardHelper : ICardHelper
+    public static class CardHelper
     {
-        public bool ContainsLeft(ISuit suit, List<ICard> cards)
+        public static bool ContainsLeft(ISuit suit, List<ICard> cards)
         {
-            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == "J").ToList();
+            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
 
             if (!jacks.Any())
             {
                 return false;
             }
 
-            var oppositeSuit = _getOppositeSuit(suit);
+            var oppositeSuit = GetOppositeSuit(suit);
 
             return jacks.Any(x => x.Suit.Equals(oppositeSuit));
         }
 
-        public bool ContainsRight(ISuit suit, List<ICard> cards)
+        public static bool ContainsRight(ISuit suit, List<ICard> cards)
         {
-            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == "J").ToList();
+            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
 
             return jacks.Any() && jacks.Any(x => x.Suit.Equals(suit));
         }
 
-        public IEnumerable<char> GetValidIndexes(ISuit leadSuit, List<ICard> cards)
+        public static IEnumerable<char> GetValidIndexes(ISuit leadSuit, List<ICard> cards)
         {
             var validInput = new List<char>();
 
@@ -64,17 +65,17 @@ namespace EuchreTime.Core.Helpers
             return validInput;
         }
 
-        public List<ISuit> GetSuitsToChooseFrom(IGameState gameState)
+        public static List<ISuit> GetSuitsToChooseFrom(ISuit turnedUpCardSuit)
         {
             var newDeck = new EuchreDeck();
             newDeck.Initialize();
 
             var allSuits = newDeck.Cards.Select(x => x.Suit).Distinct();
 
-            return allSuits.Where(x => x.Name != gameState.TurnedUpCard.Suit.Name).ToList();
+            return allSuits.Where(x => x != turnedUpCardSuit).ToList();
         }
 
-        private ISuit _getOppositeSuit(ISuit suit)
+        public static ISuit GetOppositeSuit(ISuit suit)
         {
             if (suit.Equals(Suit.Clubs))
             {

@@ -1,12 +1,14 @@
 ﻿using System;
 using EuchreTime.Core.Game;
-using EuchreTime.Core.Players;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Bidding
 {
+    public delegate void AiChoseTrumpHandler(object sender, AiChoseTrumpEventArgs e);
+
     public interface IHandleSecondRoundBidding
     {
-        void AskEachPlayerAboutTrump(IGameState gameState, Func<ISuit> humanChooseSuit, Action<ISuit, IPlayer> trumpSelectedCallback);
+        event AiChoseTrumpHandler OnAiChoseTrump;
+        void AskEachPlayerAboutTrump(IGameState gameState, Func<ISuit> humanChooseSuit);
     }
 }

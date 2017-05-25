@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Helpers;
 using EuchreTime.Core.Rules.PlayerStrategies;
 using MechanicGrip.Core.Cards;
 
@@ -81,11 +82,8 @@ namespace EuchreTime.Core.Players
         public virtual void DiscardWhenOrderedUp(IGameState gameState)
         {
             //discard lowest non-trump
-            var nonTrumpCards = Cards.Where(x => x.Suit != gameState.TurnedUpCard.Suit).OrderBy(x => x.Rank.Value).ToList();
-            var trumpCards = Cards.Where(x => x.Suit == gameState.TurnedUpCard.Suit).ToList();
-
-            //TODO: remove the 'left' from consideration
-            //create a helper to determine the 'left'
+            var nonTrumpCards = Cards.Where(x => x.Suit != gameState.TurnedUpCard.Suit || !x.IsTheLeft(gameState.TurnedUpCard.Suit)).OrderBy(x => x.Rank.Value).ToList();
+            var trumpCards = Cards.Where(x => x.Suit == gameState.TurnedUpCard.Suit || x.IsTheLeft(gameState.TurnedUpCard.Suit)).ToList();
 
             var cardToRemove = nonTrumpCards[0];
             nonTrumpCards.RemoveAt(0);

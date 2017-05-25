@@ -7,10 +7,11 @@ namespace EuchreTime.Core.Bidding
 {
     public class FirstRoundBidder : IHandleFirstRoundBidding
     {
+        public event AiOrderedUpDealerHandler OnAiOrderedUpDealer;
+
         public void AskEachPlayerAboutTheTopCard(
             IGameState gameState, 
             Func<bool> shouldHumanOrderUp, 
-            Action<bool> aiOrderUpCallback,
             Func<ICard> humanChooseDiscard
         )
         {
@@ -28,8 +29,7 @@ namespace EuchreTime.Core.Bidding
                 {
                     shouldOrderUp = gameState.CurrentPlayer.PlayerStrategy.ShouldOrderUpDealerInFirstRound(gameState);
 
-                    //TODO: consider an observable
-                    aiOrderUpCallback(shouldOrderUp);
+                    OnAiOrderedUpDealer?.Invoke(this, new AiOrderedUpDealerEventArgs(gameState.CurrentPlayer, shouldOrderUp));
                 }
 
                 if (shouldOrderUp)

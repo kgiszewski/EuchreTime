@@ -4,8 +4,12 @@ using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Bidding
 {
+    public delegate void AiOrderedUpDealerHandler(object sender, AiOrderedUpDealerEventArgs e);
+
     public interface IHandleFirstRoundBidding
     {
-        void AskEachPlayerAboutTheTopCard(IGameState gameState, Func<bool> shouldHumanOrderUp, Action<bool> aiOrderUpCallback, Func<ICard> humanChooseDiscard);
+        event AiOrderedUpDealerHandler OnAiOrderedUpDealer;
+
+        void AskEachPlayerAboutTheTopCard(IGameState gameState, Func<bool> shouldHumanOrderUp, Func<ICard> humanChooseDiscard);
     }
 }

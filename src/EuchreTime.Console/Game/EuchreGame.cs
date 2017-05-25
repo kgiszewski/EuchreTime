@@ -16,10 +16,9 @@ namespace EuchreTime.Console.Game
             IPlayHands handPlayer,
             IRenderCards cardRenderer,
             IInputHelper inputHelper,
-            ICardHelper cardHelper,
             IRenderSuits suitRenderer
         ) 
-            : base(gameState, firstRoundBidder, secondRoundBidder, handPlayer, cardRenderer, inputHelper, cardHelper, suitRenderer)
+            : base(gameState, firstRoundBidder, secondRoundBidder, handPlayer, cardRenderer, inputHelper, suitRenderer)
         {
         }
     }

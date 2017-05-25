@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using EuchreTime.Core.Game;
-using EuchreTime.Core.Players;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Bidding
 {
     public class SecondRoundBidder : IHandleSecondRoundBidding
     {
-        public void AskEachPlayerAboutTrump(IGameState gameState, Func<ISuit> humanChooseSuit, Action<ISuit, IPlayer> trumpSelectedCallback)
+        public event AiChoseTrumpHandler OnAiChoseTrump;
+
+        public void AskEachPlayerAboutTrump(IGameState gameState, Func<ISuit> humanChooseSuit)
         {
             for (var i = 0; i < gameState.Players.Count(); i++)
             {
@@ -29,8 +30,7 @@ namespace EuchreTime.Core.Bidding
                 {
                     gameState.Trump = trumpSelected;
 
-                    //TODO: consider an observable
-                    trumpSelectedCallback(trumpSelected, gameState.CurrentPlayer);
+                    OnAiChoseTrump?.Invoke(this, new AiChoseTrumpEventArgs(gameState.CurrentPlayer, trumpSelected));
                     break;
                 }
             }

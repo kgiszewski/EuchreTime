@@ -7,8 +7,10 @@ using MechanicGrip.Core.Cards;
 namespace EuchreTime.Core.Hand
 {
     public class HandPlayer : IPlayHands
-    { 
-        public void PlayHand(IGameState gameState, Func<ICard> chooseHumanCard, Action<ICard> aiChoseCardCallback)
+    {
+        public event AiPlayedCardHandler OnAiPlayedCard;
+
+        public void PlayHand(IGameState gameState, Func<ICard> chooseHumanCard)
         {
             //play a hand
             //ignoring loners for now
@@ -40,8 +42,7 @@ namespace EuchreTime.Core.Hand
                             Card = chosenCard
                         });
 
-                        //TODO: consider observable instead
-                        aiChoseCardCallback(chosenCard);
+                        OnAiPlayedCard?.Invoke(this, new AiPlayedCardEventArgs(chosenCard));
 
                         gameState.CurrentPlayer.Cards = gameState.CurrentPlayer.Cards.ToList().Except(new List<ICard> {chosenCard}).ToList();
                     }

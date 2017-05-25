@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
@@ -7,7 +6,6 @@ using EuchreTime.Core.Bidding;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Hand;
 using EuchreTime.Core.Helpers;
-using EuchreTime.Core.Players;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Suits;
 
@@ -21,7 +19,6 @@ namespace EuchreTime.Console.Game
         private readonly IPlayHands _handPlayer;
         private readonly IRenderCards _cardRenderer;
         private readonly IInputHelper _inputHelper;
-        private readonly ICardHelper _cardHelper;
         private readonly IRenderSuits _suitRenderer;
 
         protected EuchreGameBase(
@@ -31,7 +28,6 @@ namespace EuchreTime.Console.Game
             IPlayHands handPlayer,
             IRenderCards cardRenderer,
             IInputHelper inputHelper,
-            ICardHelper cardHelper,
             IRenderSuits suitRenderer
         )
         {
@@ -41,12 +37,16 @@ namespace EuchreTime.Console.Game
             _handPlayer = handPlayer;
             _cardRenderer = cardRenderer;
             _inputHelper = inputHelper;
-            _cardHelper = cardHelper;
             _suitRenderer = suitRenderer;
         }
 
         public void Play()
         {
+            //register observers
+            _firstRoundBidder.OnAiOrderedUpDealer += _firstRoundBidderOnOnAiOrderedUpDealer;
+            _secondRoundBidder.OnAiChoseTrump += _trumpSelectedCallback;
+            _handPlayer.OnAiPlayedCard += _aiPlayedCardCallback;
+
             System.Console.OutputEncoding = System.Text.Encoding.Unicode;
             System.Console.WriteLine("Welcome to Euchre Time!");
             System.Console.WriteLine($"There are {_gameState.Players.Count(x => x.IsHuman)} human players and {_gameState.Players.Count(x => !x.IsHuman)} computer players.");
@@ -74,12 +74,12 @@ namespace EuchreTime.Console.Game
                 System.Console.WriteLine(humanPlayerCards);
 
                 //first round bid
-                _firstRoundBidder.AskEachPlayerAboutTheTopCard(_gameState, _shouldHumanOrderUp, _aiOrderUpCallback, _humanChooseDiscard);
+                _firstRoundBidder.AskEachPlayerAboutTheTopCard(_gameState, _shouldHumanOrderUp, _humanChooseDiscard);
 
                 //if no takers, second round bidding
                 if (_gameState.Trump == null)
                 {
-                    _secondRoundBidder.AskEachPlayerAboutTrump(_gameState, _humanChooseSuit, _trumpSelectedCallback);
+                    _secondRoundBidder.AskEachPlayerAboutTrump(_gameState, _humanChooseSuit);
                 }
 
                 //play a hand only if trump has been chosen
@@ -88,7 +88,7 @@ namespace EuchreTime.Console.Game
                     //return the current player to the left of the dealer
                     _gameState.SetCurrentPlayerToLeftOfDealer();
 
-                    _handPlayer.PlayHand(_gameState, _chooseHumanCard, _aiChoseCardCallback);
+                    _handPlayer.PlayHand(_gameState, _chooseHumanCard);
                 }
 
                 //advance the deal, reset state as-needed
@@ -104,14 +104,21 @@ namespace EuchreTime.Console.Game
             }
         }
 
-        private void _trumpSelectedCallback(ISuit suit, IPlayer player)
+        private void _firstRoundBidderOnOnAiOrderedUpDealer(object sender, AiOrderedUpDealerEventArgs e)
         {
-            System.Console.WriteLine($"{suit.Name} has been chosen as the trump suit by {player.Name}.");
+            var action = e.ShouldOrderUp ? "to order up trump" : "to pass";
+
+            System.Console.WriteLine($"{e.Player.Name} decided {action}.");
+        }
+
+        private void _trumpSelectedCallback(object sender, AiChoseTrumpEventArgs e)
+        {
+            System.Console.WriteLine($"{e.Suit.Name} has been chosen as the trump suit by {e.Player.Name}.");
         }
 
         private ISuit _humanChooseSuit()
         {
-            var suitsToChooseFrom = _cardHelper.GetSuitsToChooseFrom(_gameState);
+            var suitsToChooseFrom = CardHelper.GetSuitsToChooseFrom(_gameState.TurnedUpCard.Suit);
 
             var renderedSuits = _suitRenderer.RenderSuits(suitsToChooseFrom, true);
 
@@ -145,14 +152,7 @@ namespace EuchreTime.Console.Game
 
             var index = int.Parse(keyPressed.ToString());
 
-            return _gameState.CurrentPlayer.Cards[index];
-        }
-
-        private void _aiOrderUpCallback(bool didAiOrderUp)
-        {
-            var action = didAiOrderUp ? "to order up trump" : "to pass";
-
-            System.Console.WriteLine($"{_gameState.CurrentPlayer.Name} decided {action}.");
+            return _gameState.CurrentPlayer.Cards[index - 1];
         }
 
         private bool _shouldHumanOrderUp()
@@ -166,9 +166,9 @@ namespace EuchreTime.Console.Game
             return keyPressed == 'Y';
         }
 
-        private void _aiChoseCardCallback(ICard chosenCard)
+        private void _aiPlayedCardCallback(object sender, AiPlayedCardEventArgs e)
         {
-            System.Console.WriteLine($"{_gameState.CurrentPlayer.Name} played the {chosenCard.Rank.Name} of {chosenCard.Suit.Name}:");
+            System.Console.WriteLine($"{_gameState.CurrentPlayer.Name} played the {e.Card.Rank.Name} of {e.Card.Suit.Name}:");
 
             var renderedCards = _cardRenderer.RenderCards(_gameState.CurrentHand.Select(x => x.Card).ToList(), new CardRenderingOptions());
 
@@ -187,7 +187,7 @@ namespace EuchreTime.Console.Game
             var keyPressed =
                 _inputHelper.GetValidInput(
                     "It is your turn, which card would you like to play?",
-                    _cardHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.CurrentPlayer.Cards)
+                    CardHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.CurrentPlayer.Cards)
                 );
 
             var indexOfCard = int.Parse(keyPressed.ToString()) - 1;

@@ -43,18 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bidding\AiChoseTrumpEventArgs.cs" />
+    <Compile Include="Bidding\AiOrderedUpDealerEventArgs.cs" />
     <Compile Include="Bidding\FirstRoundBidder.cs" />
     <Compile Include="Bidding\IHandleFirstRoundBidding.cs" />
     <Compile Include="Bidding\IHandleSecondRoundBidding.cs" />
     <Compile Include="Bidding\SecondRoundBidder.cs" />
+    <Compile Include="CardExtensions.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\GameStateBase.cs" />
     <Compile Include="Game\IGameState.cs" />
     <Compile Include="Game\PlayedCard.cs" />
+    <Compile Include="Hand\AiPlayedCardEventArgs.cs" />
     <Compile Include="Hand\HandPlayer.cs" />
     <Compile Include="Hand\IPlayHands.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
-    <Compile Include="Helpers\ICardHelper.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerBase.cs" />

@@ -17,7 +17,6 @@ namespace EuchreTime.Console
             var cardRenderer = new CardRenderer();
             var inputHelper = new InputHelper();
             var suitRenderer = new SuitRenderer();
-            var cardHelper = new CardHelper();
             var firstRoundBidder = new FirstRoundBidder();
             var secondRoundBidder = new SecondRoundBidder();
             var handPlayer = new HandPlayer();
@@ -29,7 +28,6 @@ namespace EuchreTime.Console
                 handPlayer, 
                 cardRenderer, 
                 inputHelper, 
-                cardHelper,
                 suitRenderer
             );
 
