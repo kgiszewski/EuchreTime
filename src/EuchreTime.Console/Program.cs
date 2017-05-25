@@ -1,9 +1,9 @@
-﻿using EuchreTime.Console.Bidding;
-using EuchreTime.Console.Game;
-using EuchreTime.Console.Hand;
+﻿using EuchreTime.Console.Game;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
+using EuchreTime.Core.Bidding;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Hand;
 using EuchreTime.Core.Helpers;
 
 namespace EuchreTime.Console
@@ -18,11 +18,20 @@ namespace EuchreTime.Console
             var inputHelper = new InputHelper();
             var suitRenderer = new SuitRenderer();
             var cardHelper = new CardHelper();
-            var firstRoundBidder = new FirstRoundBidder(cardRenderer, inputHelper);
-            var secondRoundBidder = new SecondRoundBidder(suitRenderer, inputHelper);
-            var handPlayer = new HandPlayer(cardRenderer, inputHelper, cardHelper);
+            var firstRoundBidder = new FirstRoundBidder();
+            var secondRoundBidder = new SecondRoundBidder();
+            var handPlayer = new HandPlayer();
 
-            var game = new EuchreGame(gameState, firstRoundBidder, secondRoundBidder, handPlayer);
+            var game = new EuchreGame(
+                gameState, 
+                firstRoundBidder, 
+                secondRoundBidder, 
+                handPlayer, 
+                cardRenderer, 
+                inputHelper, 
+                cardHelper,
+                suitRenderer
+            );
 
             game.Play();
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Core.Game;
 using MechanicGrip.Core.Cards;
+using MechanicGrip.Core.Decks;
 using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Core.Helpers
@@ -60,6 +62,16 @@ namespace EuchreTime.Core.Helpers
             }
 
             return validInput;
+        }
+
+        public List<ISuit> GetSuitsToChooseFrom(IGameState gameState)
+        {
+            var newDeck = new EuchreDeck();
+            newDeck.Initialize();
+
+            var allSuits = newDeck.Cards.Select(x => x.Suit).Distinct();
+
+            return allSuits.Where(x => x.Name != gameState.TurnedUpCard.Suit.Name).ToList();
         }
 
         private ISuit _getOppositeSuit(ISuit suit)
