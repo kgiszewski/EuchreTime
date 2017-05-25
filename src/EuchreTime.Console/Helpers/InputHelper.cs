@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace EuchreTime.Console.Helpers
+{
+    public class InputHelper : IInputHelper
+    {
+        public char GetValidInput(string message, IEnumerable<char> validInput)
+        {
+            if (validInput == null)
+            {
+                throw new Exception("No valid input provided!");
+            }
+
+            validInput = validInput.ToList();
+
+            var keyPressed = ' ';
+
+            while (!validInput.Select(x => char.ToUpperInvariant(x)).Contains(keyPressed))
+            {
+                System.Console.WriteLine($"{message} ({string.Join(", ", validInput)})");
+
+                keyPressed = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
+            }
+            
+            return keyPressed; 
+        }
+    }
+}

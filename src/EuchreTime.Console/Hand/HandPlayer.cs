@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
-using EuchreTime.Core.Players;
 using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Console.Hand
@@ -11,10 +11,15 @@ namespace EuchreTime.Console.Hand
     public class HandPlayer : IPlayHands 
     {
         private readonly IRenderCards _cardRenderer;
+        private readonly IInputHelper _inputHelper;
 
-        public HandPlayer(IRenderCards cardRenderer)
+        public HandPlayer(
+            IRenderCards cardRenderer,
+            IInputHelper inputHelper
+        )
         {
             _cardRenderer = cardRenderer;
+            _inputHelper = inputHelper;
         }
 
         public void PlayHand(IGameState gameState)
@@ -34,12 +39,15 @@ namespace EuchreTime.Console.Hand
 
                         System.Console.WriteLine(renderedCards);
 
-                        System.Console.WriteLine("It is your turn, which card would you like to play?");
+                        System.Console.WriteLine();
 
                         //TODO: restrict cards to lead suit, etc
-                        var keyPressed = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
-                        
-                        //TODO: restrict to range
+                        var keyPressed =
+                            _inputHelper.GetValidInput(
+                                "It is your turn, which card would you like to play?",
+                                new List<char> {'1', '2', '3', '4', '5'}
+                            );
+
                         var indexOfCard = int.Parse(keyPressed.ToString()) - 1;
                         var chosenCard = gameState.CurrentPlayer.Cards[indexOfCard];
 

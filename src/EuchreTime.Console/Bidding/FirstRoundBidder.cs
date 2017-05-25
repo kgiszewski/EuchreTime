@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
 using MechanicGrip.Core.Cards;
@@ -10,10 +11,15 @@ namespace EuchreTime.Console.Bidding
     public class FirstRoundBidder : IHandleFirstRoundBidding
     {
         private readonly IRenderCards _cardRenderer;
+        private readonly IInputHelper _inputHelper;
 
-        public FirstRoundBidder(IRenderCards cardRenderer)
+        public FirstRoundBidder(
+            IRenderCards cardRenderer,
+            IInputHelper inputHelper
+        )
         {
             _cardRenderer = cardRenderer;
+            _inputHelper = inputHelper;
         }
 
         public void AskEachPlayerAboutTheTopCard(IGameState gameState)
@@ -40,15 +46,14 @@ namespace EuchreTime.Console.Bidding
                 gameState.AdvanceToNextPlayer();
 
                 var shouldOrderUp = false;
-                var keyPressed = ' ';
 
                 if (gameState.CurrentPlayer.IsHuman)
                 {
-                    while (keyPressed != 'Y' && keyPressed != 'N')
-                    {
-                        System.Console.WriteLine($"Do you wish to order up {gameState.Dealer.Name} with the {gameState.TurnedUpCard.Rank.Name} of {gameState.TurnedUpCard.Suit.Name} (y/n)?");
-                        keyPressed = char.ToUpperInvariant(System.Console.ReadKey(true).KeyChar);
-                    }
+                    var keyPressed =
+                            _inputHelper.GetValidInput(
+                                $"Do you wish to order up {gameState.Dealer.Name} with the {gameState.TurnedUpCard.Rank.Name} of {gameState.TurnedUpCard.Suit.Name}?",
+                                new List<char> { 'y', 'n' }
+                            );
 
                     shouldOrderUp = keyPressed == 'Y';
 
@@ -71,11 +76,14 @@ namespace EuchreTime.Console.Bidding
                     if (gameState.Dealer.IsHuman)
                     {
                         //ask which card to discard
-                        System.Console.WriteLine("Enter the card number to discard (1, 2, 3, 4, 5):");
+                        System.Console.WriteLine();
 
-                        keyPressed = System.Console.ReadKey(true).KeyChar;
+                        var keyPressed =
+                            _inputHelper.GetValidInput(
+                                "Enter the card number to discard:",
+                                new List<char> { '1', '2', '3', '4', '5' }
+                            );
 
-                        //TODO: range check
                         var index = int.Parse(keyPressed.ToString());
 
                         var cardToRemove = gameState.CurrentPlayer.Cards[index];
