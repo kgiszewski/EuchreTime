@@ -27,11 +27,6 @@ namespace EuchreTime.Console.Rendering
             {
                 var index = 0;
 
-                if (renderingOptions.OrderByRanks)
-                {
-                    cards = cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
-                }
-
                 foreach (var card in cards)
                 {
                     index++;

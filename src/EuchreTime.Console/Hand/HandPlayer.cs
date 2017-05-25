@@ -4,7 +4,9 @@ using System.Linq;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Helpers;
 using MechanicGrip.Core.Cards;
+using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Console.Hand
 {
@@ -12,14 +14,17 @@ namespace EuchreTime.Console.Hand
     {
         private readonly IRenderCards _cardRenderer;
         private readonly IInputHelper _inputHelper;
+        private readonly ICardHelper _cardHelper;
 
         public HandPlayer(
             IRenderCards cardRenderer,
-            IInputHelper inputHelper
+            IInputHelper inputHelper,
+            ICardHelper cardHelper
         )
         {
             _cardRenderer = cardRenderer;
             _inputHelper = inputHelper;
+            _cardHelper = cardHelper;
         }
 
         public void PlayHand(IGameState gameState)
@@ -30,6 +35,8 @@ namespace EuchreTime.Console.Hand
             {
                 for (var j = 0; j < 4; j++)
                 {
+                    ICard chosenCard = null;
+
                     if (gameState.CurrentPlayer.IsHuman)
                     {
                         var renderedCards = _cardRenderer.RenderCards(gameState.CurrentPlayer.Cards, new CardRenderingOptions
@@ -39,17 +46,14 @@ namespace EuchreTime.Console.Hand
 
                         System.Console.WriteLine(renderedCards);
 
-                        System.Console.WriteLine();
-
-                        //TODO: restrict cards to lead suit, etc
                         var keyPressed =
                             _inputHelper.GetValidInput(
                                 "It is your turn, which card would you like to play?",
-                                new List<char> {'1', '2', '3', '4', '5'}
+                                _cardHelper.GetValidIndexes(gameState.LeadSuit, gameState.CurrentPlayer.Cards)
                             );
 
                         var indexOfCard = int.Parse(keyPressed.ToString()) - 1;
-                        var chosenCard = gameState.CurrentPlayer.Cards[indexOfCard];
+                        chosenCard = gameState.CurrentPlayer.Cards[indexOfCard];
 
                         System.Console.WriteLine($"You played the {chosenCard.Rank.Name} of {chosenCard.Suit.Name}:");
 
@@ -63,7 +67,7 @@ namespace EuchreTime.Console.Hand
                     }
                     else
                     {
-                        var chosenCard = gameState.CurrentPlayer.ChooseCardToPlay(gameState);
+                        chosenCard = gameState.CurrentPlayer.ChooseCardToPlay(gameState);
 
                         System.Console.WriteLine($"{gameState.CurrentPlayer.Name} played the {chosenCard.Rank.Name} of {chosenCard.Suit.Name}:");
                         
@@ -76,12 +80,14 @@ namespace EuchreTime.Console.Hand
                         gameState.CurrentPlayer.Cards = gameState.CurrentPlayer.Cards.ToList().Except(new List<ICard> {chosenCard}).ToList();
                     }
 
-                    var renderedCard = _cardRenderer.RenderCards(gameState.CurrentHand.Select(x => x.Card).ToList(), new CardRenderingOptions
-                    {
-                        OrderByRanks = false
-                    });
+                    var renderedCard = _cardRenderer.RenderCards(gameState.CurrentHand.Select(x => x.Card).ToList(), new CardRenderingOptions());
 
                     System.Console.WriteLine(renderedCard);
+
+                    if (gameState.LeadSuit == null)
+                    {
+                        gameState.LeadSuit = chosenCard.Suit;
+                    }
 
                     gameState.AdvanceToNextPlayer();
                 }

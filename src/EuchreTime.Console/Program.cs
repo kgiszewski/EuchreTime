@@ -4,6 +4,7 @@ using EuchreTime.Console.Hand;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Helpers;
 
 namespace EuchreTime.Console
 {
@@ -15,11 +16,14 @@ namespace EuchreTime.Console
             var gameState = new GameState();
             var cardRenderer = new CardRenderer();
             var inputHelper = new InputHelper();
+            var suitRenderer = new SuitRenderer();
+            var cardHelper = new CardHelper();
             var firstRoundBidder = new FirstRoundBidder(cardRenderer, inputHelper);
-            var secondRoundBidder = new SecondRoundBidder(new SuitRenderer(), inputHelper);
-            var handPlayer = new HandPlayer(cardRenderer, inputHelper);
+            var secondRoundBidder = new SecondRoundBidder(suitRenderer, inputHelper);
+            var handPlayer = new HandPlayer(cardRenderer, inputHelper, cardHelper);
 
             var game = new EuchreGame(gameState, firstRoundBidder, secondRoundBidder, handPlayer);
+
             game.Play();
         }
     }

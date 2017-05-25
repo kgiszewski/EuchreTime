@@ -8,5 +8,6 @@ namespace EuchreTime.Core.Helpers
     {
         bool ContainsLeft(ISuit suit, List<ICard> cards);
         bool ContainsRight(ISuit suit, List<ICard> cards);
+        IEnumerable<char> GetValidIndexes(ISuit leadSuit, List<ICard> cards);
     }
 }

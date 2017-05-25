@@ -70,6 +70,12 @@ namespace EuchreTime.Core.Players
 
             //turn up top card of kitty
             gameState.TurnedUpCard = gameState.Kitty.Pop();
+
+            //order each players cards
+            foreach (var player in gameState.Players)
+            {
+                player.Cards = player.Cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
+            }
         }
 
         public virtual void DiscardWhenOrderedUp(IGameState gameState)
