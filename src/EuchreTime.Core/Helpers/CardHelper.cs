@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EuchreTime.Core.Game;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;
 using MechanicGrip.Core.Ranks;
@@ -11,7 +10,7 @@ namespace EuchreTime.Core.Helpers
 {
     public static class CardHelper
     {
-        public static bool ContainsLeft(ISuit suit, List<ICard> cards)
+        public static bool ContainsLeft(ISuit trumpSuit, List<ICard> cards)
         {
             var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
 
@@ -20,7 +19,7 @@ namespace EuchreTime.Core.Helpers
                 return false;
             }
 
-            var oppositeSuit = GetOppositeSuit(suit);
+            var oppositeSuit = GetOppositeSuit(trumpSuit);
 
             return jacks.Any(x => x.Suit.Equals(oppositeSuit));
         }
@@ -32,20 +31,20 @@ namespace EuchreTime.Core.Helpers
             return jacks.Any() && jacks.Any(x => x.Suit.Equals(suit));
         }
 
-        public static IEnumerable<char> GetValidIndexes(ISuit leadSuit, List<ICard> cards)
+        public static IEnumerable<char> GetValidIndexes(ISuit leadSuit, ISuit trumpSuit, List<ICard> cards)
         {
             var validInput = new List<char>();
 
             //if there is a lead card AND current player has one of these cards, only offer one of these
             if (leadSuit != null &&
-                (cards.Any(x => x.Suit == leadSuit) || ContainsLeft(leadSuit, cards))
+                (cards.Any(x => x.Suit == leadSuit) || ContainsLeft(trumpSuit, cards))
             )
             {
                 for (var i = 0; i < cards.Count; i++)
                 {
                     var card = cards[i];
 
-                    if (card.Suit == leadSuit || ContainsLeft(leadSuit, new List<ICard> { card }))
+                    if (card.Suit == leadSuit || card.IsTheLeft(trumpSuit))
                     {
                         var charValue = Convert.ToChar(49 + i);
                         validInput.Add(charValue);

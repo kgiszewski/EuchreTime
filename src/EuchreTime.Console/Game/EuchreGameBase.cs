@@ -100,6 +100,7 @@ namespace EuchreTime.Console.Game
                 _gameState.OrderingUpPlayer = null;
                 _gameState.Kitty.Clear();
                 _gameState.CurrentHand.Clear();
+                _gameState.LeadSuit = null;
                 _clearPlayerCards();
             }
         }
@@ -157,9 +158,13 @@ namespace EuchreTime.Console.Game
 
         private bool _shouldHumanOrderUp()
         {
+            var message = (!_gameState.Dealer.IsHuman)
+                ? $"Do you want to order up {_gameState.Dealer.Name} with the {_gameState.TurnedUpCard.Rank.Name} of {_gameState.TurnedUpCard.Suit.Name}?"
+                : $"Do you want to pick up the {_gameState.TurnedUpCard.Rank.Name} of {_gameState.TurnedUpCard.Suit.Name}?";
+
             var keyPressed =
             _inputHelper.GetValidInput(
-                $"Do you wish to order up {_gameState.Dealer.Name} with the {_gameState.TurnedUpCard.Rank.Name} of {_gameState.TurnedUpCard.Suit.Name}?",
+                message,
                 new List<char> { 'y', 'n' }
             );
 
@@ -184,10 +189,26 @@ namespace EuchreTime.Console.Game
 
             System.Console.WriteLine(renderedCards);
 
+            System.Console.WriteLine($"Trump: {_gameState.Trump.Name}");
+
+            if (_gameState.LeadSuit != null)
+            {
+                System.Console.WriteLine($"Suit Lead: {_gameState.LeadSuit.Name}");
+            }
+            else
+            {
+                System.Console.WriteLine($"Suit Lead: TBD");
+            }
+
+            foreach (var player in _gameState.Players)
+            {
+                System.Console.WriteLine($"{player.Name} (Team {player.TeamNumber}) Tricks: {player.TricksTaken}");
+            }
+
             var keyPressed =
                 _inputHelper.GetValidInput(
                     "It is your turn, which card would you like to play?",
-                    CardHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.CurrentPlayer.Cards)
+                    CardHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.Trump, _gameState.CurrentPlayer.Cards)
                 );
 
             var indexOfCard = int.Parse(keyPressed.ToString()) - 1;
@@ -195,6 +216,10 @@ namespace EuchreTime.Console.Game
             var chosenCard = _gameState.CurrentPlayer.Cards[indexOfCard];
 
             System.Console.WriteLine($"You played the {chosenCard.Rank.Name} of {chosenCard.Suit.Name}:");
+
+            renderedCards = _cardRenderer.RenderCards(new List<ICard> {chosenCard},  new CardRenderingOptions());
+
+            System.Console.WriteLine(renderedCards);
 
             return chosenCard;
         }

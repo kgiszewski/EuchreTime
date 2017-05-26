@@ -88,11 +88,5 @@ namespace EuchreTime.Core.Game
             AdvanceToNextPlayer();
             AdvanceToNextPlayer();
         }
-
-        public void EvaluateHand()
-        {
-            //determine the winner of the hand
-            //update score
-        }
     }
 }

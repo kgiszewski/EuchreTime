@@ -49,6 +49,7 @@ namespace EuchreTime.Core.Bidding
                     }
 
                     gameState.Dealer.Cards.Add(gameState.TurnedUpCard);
+                    gameState.Dealer.Cards = gameState.Dealer.Cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
                     gameState.Trump = gameState.TurnedUpCard.Suit;
                     gameState.OrderingUpPlayer = gameState.CurrentPlayer;
                     break;

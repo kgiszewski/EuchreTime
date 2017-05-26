@@ -27,6 +27,5 @@ namespace EuchreTime.Core.Game
         ISuit Trump { get; set; }
         IPlayer OrderingUpPlayer { get; set; }
         List<PlayedCard> CurrentHand { get; set; }
-        void EvaluateHand();
     }
 }
