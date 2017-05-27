@@ -18,6 +18,38 @@ namespace EuchreTime.Tests.UnitTests
         public const int Hearts = 3;
         public const int Diamonds = 4;
 
+        [TestCase(1, Spades, true)]
+        [TestCase(1, Hearts, false)]
+        [TestCase(3, Hearts, true)]
+        [TestCase(3, Diamonds, false)]
+        public void ContainsLeft(int handId, int trumpSuitId, bool expectedResult)
+        {
+            var cards = _getCards(handId).OrderBySuitsAndRanks();
+            var trumpSuit = _getSuit(trumpSuitId);
+
+            _dumpCardsToConsole(cards);
+
+            var result = CardHelper.ContainsLeft(trumpSuit, cards);
+
+            Assert.AreEqual(result, expectedResult);
+        }
+
+        [TestCase(1, Spades, true)]
+        [TestCase(1, Hearts, false)]
+        [TestCase(3, Hearts, false)]
+        [TestCase(3, Diamonds, true)]
+        public void ContainsRight(int handId, int trumpSuitId, bool expectedResult)
+        {
+            var cards = _getCards(handId).OrderBySuitsAndRanks();
+            var trumpSuit = _getSuit(trumpSuitId);
+
+            _dumpCardsToConsole(cards);
+
+            var result = CardHelper.ContainsRight(trumpSuit, cards);
+
+            Assert.AreEqual(result, expectedResult);
+        }
+
         [TestCase(1, Spades, Spades, "4,5")] 
         [TestCase(1, Spades, null, "1,2,3,4,5")] 
         [TestCase(2, Spades, Spades, "1,2,3,4,5")] 
