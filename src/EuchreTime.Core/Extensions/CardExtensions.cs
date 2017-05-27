@@ -3,7 +3,7 @@ using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Ranks;
 using MechanicGrip.Core.Suits;
 
-namespace EuchreTime.Core
+namespace EuchreTime.Core.Extensions
 {
     public static class CardExtensions
     {

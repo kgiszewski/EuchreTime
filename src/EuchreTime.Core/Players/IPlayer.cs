@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using EuchreTime.Core.Game;
-using EuchreTime.Core.Rules.PlayerStrategies;
+using EuchreTime.Core.Players.PlayerStrategies;
 using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Players

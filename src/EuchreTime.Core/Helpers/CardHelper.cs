@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Core.Extensions;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;
 using MechanicGrip.Core.Ranks;

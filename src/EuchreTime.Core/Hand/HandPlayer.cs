@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Core.Extensions;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Helpers;
 using EuchreTime.Core.Players;

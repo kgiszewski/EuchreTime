@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Core.Players;
+using EuchreTime.Core.Players.PlayerStrategies;
 using EuchreTime.Core.Rules.DealerStrategies;
-using EuchreTime.Core.Rules.PlayerStrategies;
 using EuchreTime.Core.Rules.WinningConditions;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;

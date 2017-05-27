@@ -49,7 +49,7 @@
     <Compile Include="Bidding\IHandleFirstRoundBidding.cs" />
     <Compile Include="Bidding\IHandleSecondRoundBidding.cs" />
     <Compile Include="Bidding\SecondRoundBidder.cs" />
-    <Compile Include="CardExtensions.cs" />
+    <Compile Include="Extensions\CardExtensions.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\GameStateBase.cs" />
     <Compile Include="Game\IGameState.cs" />
@@ -66,8 +66,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\DealerStrategies\FirstBlackJackDealsStrategy.cs" />
     <Compile Include="Rules\DealerStrategies\IChooseDealerStrategy.cs" />
-    <Compile Include="Rules\PlayerStrategies\IPlayerStrategy.cs" />
-    <Compile Include="Rules\PlayerStrategies\NormalPlayerStrategy.cs" />
+    <Compile Include="Players\PlayerStrategies\IPlayerStrategy.cs" />
+    <Compile Include="Players\PlayerStrategies\NormalPlayerStrategy.cs" />
     <Compile Include="Rules\WinningConditions\IWinningConditions.cs" />
     <Compile Include="Rules\WinningConditions\FirstTeamToTenWins.cs" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿
 
-using EuchreTime.Core.Rules.PlayerStrategies;
+using EuchreTime.Core.Players.PlayerStrategies;
 
 namespace EuchreTime.Core.Players
 {

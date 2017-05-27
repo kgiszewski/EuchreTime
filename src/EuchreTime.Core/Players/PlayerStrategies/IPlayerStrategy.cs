@@ -2,7 +2,7 @@
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Suits;
 
-namespace EuchreTime.Core.Rules.PlayerStrategies
+namespace EuchreTime.Core.Players.PlayerStrategies
 {
     public interface IPlayerStrategy
     {
