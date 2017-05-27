@@ -37,14 +37,14 @@ namespace EuchreTime.Core.Helpers
 
             //if there is a lead card AND current player has one of these cards, only offer one of these
             if (leadSuit != null &&
-                (cards.Any(x => x.Suit == leadSuit) || ContainsLeft(trumpSuit, cards))
+                (cards.Any(x => x.Suit == leadSuit) || (trumpSuit == leadSuit && ContainsLeft(trumpSuit, cards)))
             )
             {
                 for (var i = 0; i < cards.Count; i++)
                 {
                     var card = cards[i];
 
-                    if (card.Suit == leadSuit || card.IsTheLeft(trumpSuit))
+                    if (card.Suit == leadSuit || (card.IsTheLeft(trumpSuit) && trumpSuit == leadSuit))
                     {
                         var charValue = Convert.ToChar(49 + i);
                         validInput.Add(charValue);
@@ -92,6 +92,11 @@ namespace EuchreTime.Core.Helpers
             }
 
             return Suit.Hearts;
+        }
+
+        public static List<ICard> OrderBySuitsAndRanks(this List<ICard> cards)
+        {
+            return cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
         }
     }
 }

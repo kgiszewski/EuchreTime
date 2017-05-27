@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EuchreTime.Core.Game;
+using EuchreTime.Core.Helpers;
 using MechanicGrip.Core.Cards;
 
 namespace EuchreTime.Core.Bidding
@@ -49,7 +50,7 @@ namespace EuchreTime.Core.Bidding
                     }
 
                     gameState.Dealer.Cards.Add(gameState.TurnedUpCard);
-                    gameState.Dealer.Cards = gameState.Dealer.Cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
+                    gameState.Dealer.Cards = gameState.Dealer.Cards.OrderBySuitsAndRanks();
                     gameState.Trump = gameState.TurnedUpCard.Suit;
                     gameState.OrderingUpPlayer = gameState.CurrentPlayer;
                     break;

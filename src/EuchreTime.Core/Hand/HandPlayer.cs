@@ -11,6 +11,8 @@ namespace EuchreTime.Core.Hand
     public class HandPlayer : IPlayHands
     {
         public event AiPlayedCardHandler OnAiPlayedCard;
+        public event TrickCompletedHandler OnTrickCompleted;
+        public event HandCompletedHandler OnHandCompleted;
 
         public void PlayHand(IGameState gameState, Func<ICard> chooseHumanCard)
         {
@@ -52,7 +54,14 @@ namespace EuchreTime.Core.Hand
 
                     if (gameState.LeadSuit == null)
                     {
-                        gameState.LeadSuit = chosenCard.Suit;
+                        if (chosenCard.IsTheLeft(gameState.Trump))
+                        {
+                            gameState.LeadSuit = CardHelper.GetOppositeSuit(chosenCard.Suit);
+                        }
+                        else
+                        {
+                            gameState.LeadSuit = chosenCard.Suit;
+                        }
                     }
 
                     gameState.AdvanceToNextPlayer();
@@ -64,16 +73,51 @@ namespace EuchreTime.Core.Hand
             }
 
             _evaluateHand(gameState);
+
+            foreach (var player in gameState.Players)
+            {
+                player.TricksTaken = 0;
+            }
         }
 
         public void _evaluateHand(IGameState gameState)
         {
-            //TODO: handle scoring
             //find out which team got 3+ tricks
+            var team1TrickCount = gameState.Players.Where(x => x.TeamNumber == 1).Sum(x => x.TricksTaken);
+            var team2TrickCount = gameState.Players.Where(x => x.TeamNumber == 2).Sum(x => x.TricksTaken);
+
+            var winningTeamNumber = (team1TrickCount > team2TrickCount) ? 1 : 2;
+            var winningTeamTrickCount = (winningTeamNumber == 1) ? team1TrickCount : team2TrickCount;
+            var scoreToAdd = 0;
+
             //if winning team ordered up
-            ////if got all 5, then score 2; otherwise 1
-            //else
-            //winning team gets 2
+            if (gameState.OrderingUpPlayer.TeamNumber == winningTeamNumber)
+            {
+                if (winningTeamTrickCount == 5)
+                {
+                    scoreToAdd = 2;
+                }
+                else
+                {
+                    scoreToAdd = 1;
+                }
+            }
+            else
+            {
+                //euchred!
+                scoreToAdd = 2;
+            }
+
+            if (winningTeamNumber == 1)
+            {
+                gameState.TeamOneScore += scoreToAdd;
+            }
+            else
+            {
+                gameState.TeamTwoScore += scoreToAdd;
+            }
+
+            OnHandCompleted?.Invoke(this, new HandCompletedEventArgs(winningTeamNumber, scoreToAdd, winningTeamTrickCount, gameState.TeamOneScore, gameState.TeamTwoScore));
         }
 
         public void _evaluateTrick(IGameState gameState)
@@ -109,10 +153,12 @@ namespace EuchreTime.Core.Hand
 
                 winner = gameState.CurrentHand.First(x => x.Card.Equals(highestRankPlayed.Card)).Player;
             }
-
-            //notify via observable
-
+            
             winner.TricksTaken++;
+
+            gameState.CurrentPlayer = winner;
+
+            OnTrickCompleted?.Invoke(this, new TrickCompletedEventArgs(winner));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Console.Rendering;
@@ -46,6 +47,8 @@ namespace EuchreTime.Console.Game
             _firstRoundBidder.OnAiOrderedUpDealer += _firstRoundBidderOnOnAiOrderedUpDealer;
             _secondRoundBidder.OnAiChoseTrump += _trumpSelectedCallback;
             _handPlayer.OnAiPlayedCard += _aiPlayedCardCallback;
+            _handPlayer.OnTrickCompleted += _handleOnTrickCompleted;
+            _handPlayer.OnHandCompleted += _handleOnHandCompleted;
 
             System.Console.OutputEncoding = System.Text.Encoding.Unicode;
             System.Console.WriteLine("Welcome to Euchre Time!");
@@ -66,7 +69,7 @@ namespace EuchreTime.Console.Game
 
                 System.Console.WriteLine("Your cards are the following:");
 
-                var humanPlayerCards = _cardRenderer.RenderCards(_gameState.Dealer.Cards, new CardRenderingOptions
+                var humanPlayerCards = _cardRenderer.RenderCards(_gameState.Players.First(x => x.IsHuman).Cards, new CardRenderingOptions
                 {
                     ShowIndexes = true
                 });
@@ -103,6 +106,20 @@ namespace EuchreTime.Console.Game
                 _gameState.LeadSuit = null;
                 _clearPlayerCards();
             }
+        }
+
+        private void _handleOnHandCompleted(object sender, HandCompletedEventArgs e)
+        {
+            System.Console.WriteLine($"Team {e.HandWinningTeamNumber} won the hand with {e.WinningTeamTricksWon} tricks and scored {e.PointsScored} points.");
+
+            System.Console.WriteLine("== Current Score ==");
+            System.Console.WriteLine($"Team 1: {e.TeamOnePoints}");
+            System.Console.WriteLine($"Team 2: {e.TeamTwoPoints}");
+        }
+
+        private void _handleOnTrickCompleted(object sender, TrickCompletedEventArgs e)
+        {
+            System.Console.WriteLine($"{e.TrickWinner.Name} (team {e.TrickWinner.TeamNumber}) won the trick.");
         }
 
         private void _firstRoundBidderOnOnAiOrderedUpDealer(object sender, AiOrderedUpDealerEventArgs e)
@@ -189,16 +206,18 @@ namespace EuchreTime.Console.Game
 
             System.Console.WriteLine(renderedCards);
 
-            System.Console.WriteLine($"Trump: {_gameState.Trump.Name}");
+            System.Console.WriteLine($"Ordering up player: {_gameState.OrderingUpPlayer.Name}");
 
             if (_gameState.LeadSuit != null)
             {
-                System.Console.WriteLine($"Suit Lead: {_gameState.LeadSuit.Name}");
+                System.Console.WriteLine($"Lead: {_gameState.LeadSuit.Name}");
             }
             else
             {
-                System.Console.WriteLine($"Suit Lead: TBD");
+                System.Console.WriteLine($"Lead: TBD");
             }
+
+            System.Console.WriteLine($"Trump: {_gameState.Trump.Name}");
 
             foreach (var player in _gameState.Players)
             {

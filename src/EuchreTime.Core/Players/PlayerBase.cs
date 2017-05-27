@@ -75,7 +75,7 @@ namespace EuchreTime.Core.Players
             //order each players cards
             foreach (var player in gameState.Players)
             {
-                player.Cards = player.Cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
+                player.Cards = player.Cards.OrderBySuitsAndRanks();
             }
         }
 

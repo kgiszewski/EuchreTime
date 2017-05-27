@@ -13,13 +13,19 @@ namespace EuchreTime.Tests.UnitTests
     [TestFixture]
     public class CardHelperTests
     {
-        [TestCase(1, 1, 1, "1,5")] //spades, spades
-        [TestCase(1, 1, null, "1,2,3,4,5")] //spades, no lead
-        [TestCase(2, 1, 1, "1,2,3,4,5")] //spades, spades
-        [TestCase(2, 1, null, "1,2,3,4,5")] //spades, no lead
+        public const int Spades = 1;
+        public const int Clubs = 2;
+        public const int Hearts = 3;
+        public const int Diamonds = 4;
+
+        [TestCase(1, Spades, Spades, "4,5")] 
+        [TestCase(1, Spades, null, "1,2,3,4,5")] 
+        [TestCase(2, Spades, Spades, "1,2,3,4,5")] 
+        [TestCase(2, Spades, null, "1,2,3,4,5")] 
+        [TestCase(3, Hearts, Clubs, "1")] 
         public void CheckForValidIndexes(int handId, int trumpSuitId, int? leadSuitId, string expectedResultString)
         {
-            var cards = _getCards(handId);
+            var cards = _getCards(handId).OrderBySuitsAndRanks();
             var trumpSuit = _getSuit(trumpSuitId);
             var leadSuit = _getSuit(leadSuitId);
 
@@ -110,6 +116,16 @@ namespace EuchreTime.Tests.UnitTests
                                 || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Ace)
                                 || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.King)
                                 || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
+                            )
+                        ).ToList();
+                case 3:
+                    return euchreDeck.Cards.Where(
+                            (x =>
+                                (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Nine)
+                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
+                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Jack)
+                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Nine)
+                                || (x.Suit == Suit.Spades && x.Rank.Name == Rank.King)
                             )
                         ).ToList();
                 default:

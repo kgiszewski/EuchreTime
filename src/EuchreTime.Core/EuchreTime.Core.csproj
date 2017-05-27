@@ -55,8 +55,10 @@
     <Compile Include="Game\IGameState.cs" />
     <Compile Include="Game\PlayedCard.cs" />
     <Compile Include="Hand\AiPlayedCardEventArgs.cs" />
+    <Compile Include="Hand\HandCompletedEventArgs.cs" />
     <Compile Include="Hand\HandPlayer.cs" />
     <Compile Include="Hand\IPlayHands.cs" />
+    <Compile Include="Hand\TrickCompletedEventArgs.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Players\Player.cs" />
