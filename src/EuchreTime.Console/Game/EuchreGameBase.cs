@@ -227,7 +227,7 @@ namespace EuchreTime.Console.Game
             var keyPressed =
                 _inputHelper.GetValidInput(
                     "It is your turn, which card would you like to play?",
-                    CardHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.Trump, _gameState.CurrentPlayer.Cards)
+                    _inputHelper.GetValidIndexes(_gameState.LeadSuit, _gameState.Trump, _gameState.CurrentPlayer.Cards)
                 );
 
             var indexOfCard = int.Parse(keyPressed.ToString()) - 1;

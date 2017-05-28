@@ -11,7 +11,7 @@ namespace EuchreTime.Core.Bidding
         public AiOrderedUpDealerEventArgs(IPlayer player, bool shouldOrderUp)
         {
             Player = player;
-            ShouldOrderUp = ShouldOrderUp;
+            ShouldOrderUp = shouldOrderUp;
         }
     }
 }

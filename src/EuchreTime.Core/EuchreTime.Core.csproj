@@ -60,14 +60,16 @@
     <Compile Include="Hand\IPlayHands.cs" />
     <Compile Include="Hand\TrickCompletedEventArgs.cs" />
     <Compile Include="Helpers\CardHelper.cs" />
+    <Compile Include="Helpers\TrickHelper.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerBase.cs" />
+    <Compile Include="Players\PlayerStrategies\NormalPlayerStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\DealerStrategies\FirstBlackJackDealsStrategy.cs" />
     <Compile Include="Rules\DealerStrategies\IChooseDealerStrategy.cs" />
     <Compile Include="Players\PlayerStrategies\IPlayerStrategy.cs" />
-    <Compile Include="Players\PlayerStrategies\NormalPlayerStrategy.cs" />
+    <Compile Include="Players\PlayerStrategies\PlayerStrategyBase.cs" />
     <Compile Include="Rules\WinningConditions\IWinningConditions.cs" />
     <Compile Include="Rules\WinningConditions\FirstTeamToTenWins.cs" />
   </ItemGroup>

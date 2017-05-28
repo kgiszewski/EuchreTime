@@ -25,44 +25,35 @@ namespace EuchreTime.Core.Helpers
             return jacks.Any(x => x.Suit.Equals(oppositeSuit));
         }
 
-        public static bool ContainsRight(ISuit suit, List<ICard> cards)
+        public static bool ContainsRight(ISuit trumpSuit, List<ICard> cards)
         {
             var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
 
-            return jacks.Any() && jacks.Any(x => x.Suit.Equals(suit));
+            return jacks.Any() && jacks.Any(x => x.Suit.Equals(trumpSuit));
         }
-
-        public static IEnumerable<char> GetValidIndexes(ISuit leadSuit, ISuit trumpSuit, List<ICard> cards)
+        
+        public static IEnumerable<ICard> GetValidCards(ISuit leadSuit, ISuit trumpSuit, List<ICard> cards)
         {
-            var validInput = new List<char>();
+            var validCards = new List<ICard>();
 
             //if there is a lead card AND current player has one of these cards, only offer one of these
-            if (leadSuit != null &&
-                (cards.Any(x => x.Suit == leadSuit) || (trumpSuit == leadSuit && ContainsLeft(trumpSuit, cards)))
+            if (leadSuit != null && leadSuit != trumpSuit && cards.Any(x => x.Suit == leadSuit)
             )
             {
-                for (var i = 0; i < cards.Count; i++)
-                {
-                    var card = cards[i];
-
-                    if (card.Suit == leadSuit || (card.IsTheLeft(trumpSuit) && trumpSuit == leadSuit))
-                    {
-                        var charValue = Convert.ToChar(49 + i);
-                        validInput.Add(charValue);
-                    }
-                }
+                validCards.AddRange(GetAllNonTrump(trumpSuit, cards).Where(x =>x.Suit == leadSuit));
             }
-            else
+            else if (trumpSuit == leadSuit)
+            {
+                validCards.AddRange(GetAllTrump(trumpSuit, cards));
+            }
+            
+            if(!validCards.Any())
             {
                 //otherwise, any card
-                for (var i = 0; i < cards.Count; i++)
-                {
-                    var charValue = Convert.ToChar(49 + i);
-                    validInput.Add(charValue);
-                }
+                validCards.AddRange(cards);
             }
 
-            return validInput;
+            return validCards;
         }
 
         public static List<ISuit> GetSuitsToChooseFrom(ISuit turnedUpCardSuit)
@@ -98,6 +89,31 @@ namespace EuchreTime.Core.Helpers
         public static List<ICard> OrderBySuitsAndRanks(this List<ICard> cards)
         {
             return cards.OrderBy(x => x.Suit.Name).ThenByDescending(x => x.Rank.Value).ToList();
+        }
+
+        public static List<ICard> GetAllTrump(ISuit trumpSuit, List<ICard> cards)
+        {
+            return cards.Where(x => x.Suit == trumpSuit || x.IsTheLeft(trumpSuit)).ToList();
+        }
+
+        public static List<ICard> GetAllNonTrump(ISuit trumpSuit, List<ICard> cards)
+        {
+            return cards.Where(x => x.Suit != trumpSuit && !x.IsTheLeft(trumpSuit)).ToList();
+        }
+
+        public static ICard GetHighestTrump(ISuit trumpSuit, List<ICard> cards)
+        {
+            if(ContainsRight(trumpSuit, cards))
+            {
+                return cards.First(x => x.IsTheRight(trumpSuit));
+            }
+
+            if (ContainsLeft(trumpSuit, cards))
+            {
+                return cards.First(x => x.IsTheLeft(trumpSuit));
+            }
+
+            return cards.OrderByDescending(x => x.Rank.Value).FirstOrDefault(x => x.Suit == trumpSuit);
         }
     }
 }

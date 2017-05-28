@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Core.Helpers;
+using MechanicGrip.Core.Cards;
+using MechanicGrip.Core.Suits;
 
 namespace EuchreTime.Console.Helpers
 {
@@ -25,6 +28,13 @@ namespace EuchreTime.Console.Helpers
             }
             
             return keyPressed; 
+        }
+
+        public IEnumerable<char> GetValidIndexes(ISuit leadSuit, ISuit trumpSuit, List<ICard> cards)
+        {
+            var validCards = CardHelper.GetValidCards(leadSuit, trumpSuit, cards);
+
+            return validCards.Select(card => cards.IndexOf(card)).Select(index => Convert.ToChar(49 + index)).ToList();
         }
     }
 }

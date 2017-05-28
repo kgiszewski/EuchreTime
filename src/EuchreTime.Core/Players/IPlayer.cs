@@ -16,5 +16,7 @@ namespace EuchreTime.Core.Players
         string Name { get; set; }
         void DiscardWhenOrderedUp(IGameState gameState);
         ICard ChooseCardToPlay(IGameState gameState);
+        IPlayer Partner(IGameState gameState);
+        bool IsDealing(IGameState gameState);
     }
 }

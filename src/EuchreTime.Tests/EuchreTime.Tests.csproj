@@ -54,6 +54,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EuchreTime.Console\EuchreTime.Console.csproj">
+      <Project>{f35a1202-a7f8-4df2-ad02-100947b5dad7}</Project>
+      <Name>EuchreTime.Console</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EuchreTime.Core\EuchreTime.Core.csproj">
       <Project>{9e3bed6f-da59-491e-a2f1-91ccdc7d19a0}</Project>
       <Name>EuchreTime.Core</Name>

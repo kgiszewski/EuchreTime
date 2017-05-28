@@ -29,6 +29,7 @@ namespace EuchreTime.Core.Bidding
                 if (trumpSelected != null)
                 {
                     gameState.Trump = trumpSelected;
+                    gameState.OrderingUpPlayer = gameState.CurrentPlayer;
 
                     OnAiChoseTrump?.Invoke(this, new AiChoseTrumpEventArgs(gameState.CurrentPlayer, trumpSelected));
                     break;

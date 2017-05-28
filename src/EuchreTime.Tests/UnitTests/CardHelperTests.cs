@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EuchreTime.Console.Helpers;
 using EuchreTime.Core.Helpers;
 using MechanicGrip.Core.Cards;
 using MechanicGrip.Core.Decks;
@@ -17,6 +18,8 @@ namespace EuchreTime.Tests.UnitTests
         public const int Clubs = 2;
         public const int Hearts = 3;
         public const int Diamonds = 4;
+
+        public readonly IInputHelper _inputHelper = new InputHelper();
 
         [TestCase(1, Spades, true)]
         [TestCase(1, Hearts, false)]
@@ -54,7 +57,8 @@ namespace EuchreTime.Tests.UnitTests
         [TestCase(1, Spades, null, "1,2,3,4,5")] 
         [TestCase(2, Spades, Spades, "1,2,3,4,5")] 
         [TestCase(2, Spades, null, "1,2,3,4,5")] 
-        [TestCase(3, Hearts, Clubs, "1")] 
+        [TestCase(3, Hearts, Clubs, "1")]
+        [TestCase(4, Diamonds, Hearts, "5")]
         public void CheckForValidIndexes(int handId, int trumpSuitId, int? leadSuitId, string expectedResultString)
         {
             var cards = _getCards(handId).OrderBySuitsAndRanks();
@@ -63,19 +67,19 @@ namespace EuchreTime.Tests.UnitTests
 
             Assert.AreEqual(5, cards.Count);
 
-            Console.WriteLine($"Trump: {trumpSuit?.Name}");
-            Console.WriteLine($"Lead: {leadSuit?.Name}");
+            System.Console.WriteLine($"Trump: {trumpSuit?.Name}");
+            System.Console.WriteLine($"Lead: {leadSuit?.Name}");
 
             _dumpCardsToConsole(cards);
 
-            var result = CardHelper.GetValidIndexes(leadSuit, trumpSuit, cards).OrderBy(x => x.ToString());
+            var result = _inputHelper.GetValidIndexes(leadSuit, trumpSuit, cards).OrderBy(x => x.ToString());
             var expectedResult = _getExpectedResultAsCharList(expectedResultString).OrderBy(x => x.ToString());
 
             Assert.AreEqual(expectedResult.Count(), result.Count());
 
             foreach (var item in expectedResult)
             {
-                var actualItem = result.First(x => x.ToString() == item.ToString());
+                var actualItem = result.FirstOrDefault(x => x.ToString() == item.ToString());
 
                 Assert.AreEqual(item, actualItem);
             }
@@ -101,7 +105,7 @@ namespace EuchreTime.Tests.UnitTests
 
             foreach (var card in cards)
             {
-                Console.WriteLine($"{counter} - {card.Rank.Name} of {card.Suit.Name}");
+                System.Console.WriteLine($"{counter} - {card.Rank.Name} of {card.Suit.Name}");
                 counter++;
             }
         } 
@@ -158,6 +162,16 @@ namespace EuchreTime.Tests.UnitTests
                                 || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Jack)
                                 || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Nine)
                                 || (x.Suit == Suit.Spades && x.Rank.Name == Rank.King)
+                            )
+                        ).ToList();
+                case 4:
+                    return euchreDeck.Cards.Where(
+                            (x =>
+                                (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Nine)
+                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Ace)
+                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
+                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Jack)
+                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Nine)
                             )
                         ).ToList();
                 default:

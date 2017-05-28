@@ -17,6 +17,11 @@ namespace EuchreTime.Core.Players
         public int TricksTaken { get; set; }
         public string Name { get; set; }
 
+        public virtual IPlayer Partner(IGameState gameState)
+        {
+            return gameState.Players.First(x => x.TeamNumber == TeamNumber);
+        }
+
         protected PlayerBase(string name, int teamNumber, IPlayerStrategy playerStrategy, bool isHuman)
         {
             TeamNumber = teamNumber;
@@ -107,6 +112,11 @@ namespace EuchreTime.Core.Players
             {
                 return gameState.CurrentPlayer.PlayerStrategy.ChooseLeadCard(gameState);
             }
+        }
+
+        public bool IsDealing(IGameState gameState)
+        {
+            return this == gameState.Dealer;
         }
     }
 }
