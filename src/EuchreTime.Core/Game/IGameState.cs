@@ -3,9 +3,9 @@ using System.ComponentModel;
 using EuchreTime.Core.Players;
 using EuchreTime.Core.Rules.DealerStrategies;
 using EuchreTime.Core.Rules.WinningConditions;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Decks;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Game
 {

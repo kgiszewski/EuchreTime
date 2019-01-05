@@ -2,7 +2,7 @@
 using System.Linq;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Helpers;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Bidding
 {

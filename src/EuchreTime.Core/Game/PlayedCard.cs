@@ -1,5 +1,5 @@
 ﻿using EuchreTime.Core.Players;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Game
 {

@@ -7,8 +7,8 @@ using EuchreTime.Core.Bidding;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Hand;
 using EuchreTime.Core.Helpers;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Console.Game
 {
@@ -234,7 +234,7 @@ namespace EuchreTime.Console.Game
 
             var chosenCard = _gameState.CurrentPlayer.Cards[indexOfCard];
 
-            System.Console.WriteLine($"You played the {chosenCard.Rank.Name} of {chosenCard.Suit.Name}:");
+            System.Console.WriteLine($"You played the {chosenCard.Rank.Name} of {chosenCard.Rank.Name}:");
 
             renderedCards = _cardRenderer.RenderCards(new List<ICard> {chosenCard},  new CardRenderingOptions());
 

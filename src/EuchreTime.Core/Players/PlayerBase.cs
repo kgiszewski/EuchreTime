@@ -4,7 +4,7 @@ using EuchreTime.Core.Extensions;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Helpers;
 using EuchreTime.Core.Players.PlayerStrategies;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Players
 {
@@ -34,8 +34,6 @@ namespace EuchreTime.Core.Players
         public virtual void Deal(IGameState gameState)
         {
             var deck = gameState.Deck;
-
-            deck.Initialize();
 
             for (var i = 0; i < 100; i++)
             {

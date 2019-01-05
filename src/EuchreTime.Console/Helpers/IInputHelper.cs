@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Console.Helpers
 {

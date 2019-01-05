@@ -1,6 +1,6 @@
 ﻿using System;
 using EuchreTime.Core.Game;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Bidding
 {

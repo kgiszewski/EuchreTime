@@ -1,5 +1,5 @@
 ﻿using System;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Hand
 {

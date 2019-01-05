@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Console.Helpers;
 using EuchreTime.Core.Helpers;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Ranks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Decks;
+using MechanicGrip.Ranks;
+using MechanicGrip.Suits;
 using NUnit.Framework;
 
 namespace EuchreTime.Tests.UnitTests
@@ -115,13 +115,13 @@ namespace EuchreTime.Tests.UnitTests
             switch (suit)
             {
                 case 1:
-                    return Suit.Spades;
+                    return StandardSuit.Spades;
                 case 2:
-                    return Suit.Clubs;
+                    return StandardSuit.Clubs;
                 case 3:
-                    return Suit.Hearts;
+                    return StandardSuit.Hearts;
                 case 4:
-                    return Suit.Diamonds;
+                    return StandardSuit.Diamonds;
                 default:
                     return null;
             }
@@ -130,48 +130,47 @@ namespace EuchreTime.Tests.UnitTests
         private List<ICard> _getCards(int hand)
         {
             var euchreDeck = new EuchreDeck();
-            euchreDeck.Initialize();
 
             switch (hand)
             {
                 case 1:
                     return euchreDeck.Cards.Where(
                             (x => 
-                                (x.Suit == Suit.Spades && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Ace)
-                                || (x.Suit == Suit.Clubs && x.Rank.Name == Rank.King)
-                                || (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Queen)
+                                (x.Suit == StandardSuit.Spades && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.Ace)
+                                || (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.King)
+                                || (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.Queen)
                             )
                         ).ToList();
                 case 2:
                     return euchreDeck.Cards.Where(
                             (x =>
-                                (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Ace)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.King)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
+                                (x.Suit == StandardSuit.Hearts && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Ace)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.King)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Queen)
                             )
                         ).ToList();
                 case 3:
                     return euchreDeck.Cards.Where(
                             (x =>
-                                (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Nine)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Nine)
-                                || (x.Suit == Suit.Spades && x.Rank.Name == Rank.King)
+                                (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.Nine)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Queen)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Hearts && x.Rank.Name == StandardRank.Nine)
+                                || (x.Suit == StandardSuit.Spades && x.Rank.Name == StandardRank.King)
                             )
                         ).ToList();
                 case 4:
                     return euchreDeck.Cards.Where(
                             (x =>
-                                (x.Suit == Suit.Clubs && x.Rank.Name == Rank.Nine)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Ace)
-                                || (x.Suit == Suit.Diamonds && x.Rank.Name == Rank.Queen)
-                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Jack)
-                                || (x.Suit == Suit.Hearts && x.Rank.Name == Rank.Nine)
+                                (x.Suit == StandardSuit.Clubs && x.Rank.Name == StandardRank.Nine)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Ace)
+                                || (x.Suit == StandardSuit.Diamonds && x.Rank.Name == StandardRank.Queen)
+                                || (x.Suit == StandardSuit.Hearts && x.Rank.Name == StandardRank.Jack)
+                                || (x.Suit == StandardSuit.Hearts && x.Rank.Name == StandardRank.Nine)
                             )
                         ).ToList();
                 default:

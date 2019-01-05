@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using EuchreTime.Core.Players;
-using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Ranks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Decks;
+using MechanicGrip.Ranks;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Rules.DealerStrategies
 {
@@ -14,7 +14,7 @@ namespace EuchreTime.Core.Rules.DealerStrategies
             var topCard = deck.Cards.Pop();
             var playerIndex = 0;
 
-            while (topCard.Rank.Name != Rank.Jack && (topCard.Suit.Equals(Suit.Clubs) || topCard.Suit.Equals(Suit.Spades)))
+            while (topCard.Rank.Name != StandardRank.Jack && (topCard.Suit.Equals(StandardSuit.Clubs) || topCard.Suit.Equals(StandardSuit.Spades)))
             {
                 topCard = deck.Cards.Pop();
 

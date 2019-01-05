@@ -3,9 +3,9 @@ using System.Linq;
 using EuchreTime.Core.Extensions;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Helpers;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Ranks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Ranks;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Players.PlayerStrategies
 {
@@ -21,7 +21,7 @@ namespace EuchreTime.Core.Players.PlayerStrategies
             if (trumpCount > 2)
             {
                 //if a bower is turned up, pass if our team is not dealing
-                if (gameState.TurnedUpCard.Rank.Symbol == Rank.Jack &&
+                if (gameState.TurnedUpCard.Rank.Symbol == StandardRank.Jack &&
                     (!gameState.CurrentPlayer.IsDealing(gameState) ||
                      !gameState.CurrentPlayer.Partner(gameState).IsDealing(gameState)))
                 {

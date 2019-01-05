@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Players.PlayerStrategies;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Players
 {

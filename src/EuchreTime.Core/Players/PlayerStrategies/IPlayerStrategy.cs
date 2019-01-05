@@ -1,6 +1,6 @@
 ﻿using EuchreTime.Core.Game;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Players.PlayerStrategies
 {

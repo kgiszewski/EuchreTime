@@ -5,7 +5,7 @@ using EuchreTime.Core.Extensions;
 using EuchreTime.Core.Game;
 using EuchreTime.Core.Helpers;
 using EuchreTime.Core.Players;
-using MechanicGrip.Core.Cards;
+using MechanicGrip.Cards;
 
 namespace EuchreTime.Core.Hand
 {

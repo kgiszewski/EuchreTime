@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Console.Rendering
 {

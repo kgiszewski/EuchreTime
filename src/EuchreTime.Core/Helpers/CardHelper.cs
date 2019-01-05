@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EuchreTime.Core.Extensions;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Ranks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Decks;
+using MechanicGrip.Ranks;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Helpers
 {
@@ -13,7 +12,7 @@ namespace EuchreTime.Core.Helpers
     {
         public static bool ContainsLeft(ISuit trumpSuit, List<ICard> cards)
         {
-            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
+            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == StandardRank.JackSymbol).ToList();
 
             if (!jacks.Any())
             {
@@ -27,7 +26,7 @@ namespace EuchreTime.Core.Helpers
 
         public static bool ContainsRight(ISuit trumpSuit, List<ICard> cards)
         {
-            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == Rank.JackSymbol).ToList();
+            var jacks = cards.Where(x => x.Rank.Symbol.ToUpper() == StandardRank.JackSymbol).ToList();
 
             return jacks.Any() && jacks.Any(x => x.Suit.Equals(trumpSuit));
         }
@@ -59,7 +58,6 @@ namespace EuchreTime.Core.Helpers
         public static List<ISuit> GetSuitsToChooseFrom(ISuit turnedUpCardSuit)
         {
             var newDeck = new EuchreDeck();
-            newDeck.Initialize();
 
             var allSuits = newDeck.Cards.Select(x => x.Suit).Distinct();
 
@@ -68,22 +66,22 @@ namespace EuchreTime.Core.Helpers
 
         public static ISuit GetOppositeSuit(ISuit suit)
         {
-            if (suit.Equals(Suit.Clubs))
+            if (suit.Equals(StandardSuit.Clubs))
             {
-                return Suit.Spades;
+                return StandardSuit.Spades;
             }
 
-            if (suit.Equals(Suit.Spades))
+            if (suit.Equals(StandardSuit.Spades))
             {
-                return Suit.Clubs;
+                return StandardSuit.Clubs;
             }
 
-            if (suit.Equals(Suit.Hearts))
+            if (suit.Equals(StandardSuit.Hearts))
             {
-                return Suit.Diamonds;
+                return StandardSuit.Diamonds;
             }
 
-            return Suit.Hearts;
+            return StandardSuit.Hearts;
         }
 
         public static List<ICard> OrderBySuitsAndRanks(this List<ICard> cards)

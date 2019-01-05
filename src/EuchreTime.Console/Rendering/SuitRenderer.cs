@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Console.Rendering
 {

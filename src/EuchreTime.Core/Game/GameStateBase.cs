@@ -4,9 +4,9 @@ using EuchreTime.Core.Players;
 using EuchreTime.Core.Players.PlayerStrategies;
 using EuchreTime.Core.Rules.DealerStrategies;
 using EuchreTime.Core.Rules.WinningConditions;
-using MechanicGrip.Core.Cards;
-using MechanicGrip.Core.Decks;
-using MechanicGrip.Core.Suits;
+using MechanicGrip.Cards;
+using MechanicGrip.Decks;
+using MechanicGrip.Suits;
 
 namespace EuchreTime.Core.Game
 {
@@ -35,7 +35,6 @@ namespace EuchreTime.Core.Game
         protected GameStateBase(IDeck deck, IWinningConditions winningConditions, IChooseDealerStrategy dealerStrategy)
         {
             Deck = deck;
-            Deck.Initialize();
 
             for (var i = 0; i < 100; i++)
             {
